@@ -2,10 +2,10 @@ const asyncWrapper=require('../middlewares/async')
 const Ticket = require("../models/ticket.model");
 
 const {validator}= require('../validator/validator');
-const {createUserValidation,userIdInParams}= require('../validator/user.validation');
+const {ticketIdInParams}= require('../validator/ticket.validation');
 
 
-const {checkRoleForTicket,} = require("../utils/utils");
+const {checkRoleForTicket,storeTicketInRes} = require("../utils/utils");
 
 const _ = require('lodash');
 
@@ -17,10 +17,15 @@ const tickets = await Ticket.find()
   
 });
 
-const getTicket=asyncWrapper(async(req,res)=>{
-    
-        const ticket = await Ticket.findById(req.params.id);
-        res.json({ ticket });
+const getTicket=asyncWrapper(async(req,res,next)=>{
+
+
+    const { errors, statusCode ,fail} = await validator(ticketIdInParams)(req,res,next);
+    if(fail) throw ({errors:errors.id ,statusCode:statusCode});
+  
+    const ticket = await Ticket.findById(req.params.id); 
+    return res.json(ticket)
+
       
 })
 
@@ -41,18 +46,20 @@ const createTicket =asyncWrapper( async (req, res) => {
 
 });
 
-const updateTicket= asyncWrapper( async (req, res) => {
-    console.log('checkRoleForTicket 2');
+const updateTicket= asyncWrapper( async (req, res,next) => {
 
+    const { errors, statusCode ,fail} = await validator(ticketIdInParams)(req,res,next);
+    if(fail) throw ({errors:errors.id ,statusCode:statusCode});
+  
 
     const ticket = await Ticket.findById(req.params.id); 
   
     const fieldsToUpdate = _.pickBy(req.body, (value) => value !== '');
     const allowedFields = [
-      'customer',
+    //   'customer',
       'imagePath',
       'description',
-      'technician',
+    //   'technician',
       'priority',
       'status',
     ];
@@ -70,11 +77,10 @@ const deleteTicket = asyncWrapper( async (req, res) => {
 
     await checkRoleForTicket(true);
 
-    const ticket = await Ticket.findById(req.params.id);
-    
-    await ticket.remove();
+    const deletedTickets = await Ticket.deleteOne({ _id: req.params.id });
+    // console.log(`Deleted ticket count: ${deletedTickets.deletedCount}`);
 
-    res.json({ message: "Ticket deleted" });
+    return res.json({ message: "Ticket deleted" });
 
   });
 

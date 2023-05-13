@@ -11,12 +11,15 @@ const getUsers=asyncWrapper(async (req, res) => {
     res.json(users);
 });
 
-const getUser=asyncWrapper(async (req, res) => {
+const getUser=asyncWrapper(async (req, res,next) => {
    
+  const { errors, statusCode ,fail} = await validator(userIdInParams)(req,res,next);
+  if(fail) throw ({errors:errors.id ,statusCode:statusCode});
+
     const user = await User.findById(req.params.id); 
-    if(user==null){
-      return res.status(404).json({ message: "Cannot find user" });
-    }
+    // if(user==null){
+    //   return res.status(404).json({ message: "Cannot find user" });
+    // }
     res.json(user);
 });
 
@@ -58,6 +61,8 @@ const updateUser= asyncWrapper(async (req, res,next) => {
     ];
     const filteredFields = _.pick(fieldsToUpdate, allowedFields);
   
+    console.log(filteredFields);
+    console.log(user);
     user.set(filteredFields);
   
     const updatedUser = await user.save();

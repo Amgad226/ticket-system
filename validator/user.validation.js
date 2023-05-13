@@ -94,11 +94,11 @@ const createUserValidation = async(req) => {
       fail=true; 
     }
 
-    // else if (await   userExistById(req.params.id) ==false) {
-    //   addToErrors(errors,'id','user not exists ')
-    //   fail=true;
-    //   code=404
-    // }
+    else if (await   userExistById(req.params.id) ==false) {
+      addToErrors(errors,'id','user not exists ')
+      fail=true;
+      code=404
+    }
 
     return {
       errors:errors,

@@ -23,21 +23,15 @@ async function getUser(req, res, next) {
 }
 
 // Middleware function to get a ticket by ID
-async function getTicket(req, res, next) {
-  console.log('unused middleware');
+async function storeTicketInRes(req, res, next) {
+  
+    
+    // const ticket =await Ticket.findById(req.params.id );
+    // if(ticket ==null)   return res.status(404).json({ message: "Ticket not found" });
+
     next();
+    
 
-  // try {
-  //   const ticket = await Ticket.findById(req.params.id);
-
-  //   if (ticket == null) {
-  //     return res.status(404).json({ message: "Ticket not found" });
-  //   }
-  //   res.ticket = ticket;
-  //   next();
-  // } catch (err) {
-  //   return res.status(500).json({ message: err.message });
-  // }
 }
 
 // Middleware to verify JWT token
@@ -111,23 +105,17 @@ function checkRoleForUser(roles, isPrivate) {
 4. If it is not true, we check if the user role is "user" and if the ticket customer is not equal to the user id. If it is, we respond with a 403 status code and a message informing the user that they do not have access to the ticket.
 5. If both are false, we call next() to move on to the next middleware function. */
 
-  function checkRoleForTicket(userIsNotAllowd = false) {
-  return  async function (req, res, next) {
- 
+function checkRoleForTicket(userIsNotAllowd = false) {
+  return async function (req, res, next) {
     const userRole = req.user.role;
     const userId = req.user.id;
-    console.log('userRole' ,userRole ,'userId', userId);
 
     if (userRole === "user" && userIsNotAllowd) {
       res.status(403).json({ message: "Access denied, it is not your ticket" });
     } else if (userRole === "user" && req.params.id) {
       const idTicket = req.params.id;
-      console.log(idTicket,'idTicket');
-      // const ticket = await Ticket.findById(idTicket);
       const ticket = await Ticket.findById(idTicket);
-      console.log(ticket,'ticket ');
-      console.log(ticket.customer);
-      if (ticket.customer.toString() !== userId || userIsNotAllowd) {
+      if (ticket?.customer.toString() !== userId || userIsNotAllowd) {
         res
           .status(403)
           .json({ message: "Access denied, it is not your ticket" });
@@ -137,9 +125,9 @@ function checkRoleForUser(roles, isPrivate) {
     } else {
       next();
     }
-  }
-  
+  };
 }
+
 
 async function getComment(req, res, next) {
   let comment;
@@ -178,8 +166,9 @@ module.exports = {
   getUser,
   verifyToken,
   checkRoleForUser,
-  getTicket,
+  // getTicket,
   checkRoleForTicket,
   getComment,
   updateUserDTO,
+  storeTicketInRes,
 };
