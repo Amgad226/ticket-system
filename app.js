@@ -16,6 +16,7 @@ var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users.route");
 var ticketsRouter = require("./routes/tickets.route");
 var commentsRouter = require("./routes/comments.route");
+var techniciansRouter = require("./routes/technicians.route");
 
 var app = express();
 
@@ -30,6 +31,7 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/tickets", ticketsRouter);
 app.use("/comments", commentsRouter);
+app.use("/technicians", techniciansRouter);
 
 // error handler 
 // app.use(errorHandlerMiddleware);
