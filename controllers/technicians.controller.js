@@ -4,7 +4,7 @@ const User = require('../models/user.model');
 const Ticket = require('../models/ticket.model');
 
 const {validator}= require('../validator/validator');
-const {createUserValidation,userIdInParams}= require('../validator/user.validation');
+const {userIdInParams}= require('../validator/user.validation');
 const {createTechnicianValidation,nameToSearch}= require('../validator/technician.validation');
 
 const _ = require('lodash');

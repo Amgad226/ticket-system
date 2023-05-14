@@ -60,7 +60,7 @@ async function verifyToken(req, res, next) {
     req.user = decoded.userPayload;
     next();
   } catch (err) {
-   return  res.status(401).json({ message: "Invalid Access Token" ,e:err.message});
+   return  res.status(401).json({ message: "Invalid Access Token , token was expired" });
   }
 }
 

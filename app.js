@@ -6,8 +6,6 @@ const mongoose = require("mongoose");
 const bodyParser = require('body-parser');//none
 const {notFound} = require('./middlewares/not-found');
 require('dotenv').config();
-const {connectDB}= require('./db.connect')
-const {errorHandlerMiddleware} = require('./middlewares/error-handler');
 
 
 const User = require("./models/user.model");
@@ -33,11 +31,9 @@ app.use("/tickets", ticketsRouter);
 app.use("/comments", commentsRouter);
 app.use("/technicians", techniciansRouter);
 
-// error handler 
-// app.use(errorHandlerMiddleware);
 
 // not Found route 
-// app.use(notFound);
+app.use(notFound);
 
 
 // connect on DataBase 
@@ -87,7 +83,8 @@ User.findOne({ role: "admin" })
   });
 
 
-app.listen(process.env.PORT || 3000 , ()=>{
-  console.log(`the server listening on ${process.env.PORT || 3000 } port`);
-})
-// module.exports = app;
+// app.listen(process.env.PORT || 3000 , ()=>{
+  // console.log(`the server listening on ${process.env.PORT || 3000 } port`);
+// })
+module.exports = app;
+// 

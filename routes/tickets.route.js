@@ -3,7 +3,7 @@ const router = express.Router();
 const {getTickets ,getTicket , createTicket ,updateTicket ,deleteTicket ,giveToTheTechnician}=require('../controllers/ticket.controller');
 const { verifyToken,  checkRoleForTicket} = require("../utils/utils");
 const {upload} =require('../multer')
-const {isAdmin,isAdminOrMe}=require('../middlewares/admin.middlewre');
+const {isAdmin }=require('../middlewares/admin.middlewre');
 
 // GET all tickets
 router.get("/", [verifyToken, checkRoleForTicket(true)], getTickets);

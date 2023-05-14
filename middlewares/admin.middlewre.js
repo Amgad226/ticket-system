@@ -7,7 +7,7 @@ const isAdmin = async (req,res,next)=>{
 
 }
 
-const isAdminOrMe= async (req,res,next)=>{
+const isAdminOrTechnicianIsMe= async (req,res,next)=>{
     const userRole = req.user.role;
     const userId = req.user.id;
     const idParam = req.params.id;
@@ -28,5 +28,5 @@ const isAdminOrMe= async (req,res,next)=>{
 }
 
 module.exports={
-    isAdmin,isAdminOrMe
+    isAdmin,isAdminOrTechnicianIsMe
 }
