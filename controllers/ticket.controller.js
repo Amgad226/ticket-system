@@ -1,5 +1,6 @@
 const asyncWrapper=require('../middlewares/async')
 const Ticket = require("../models/ticket.model");
+const User = require("../models/user.model");
 
 const {validator}= require('../validator/validator');
 const {ticketIdInParams}= require('../validator/ticket.validation');
@@ -11,7 +12,7 @@ const _ = require('lodash');
 
 
 const getTickets= asyncWrapper(async (req, res) => {
-// console.log('getTickets controller');
+
 const tickets = await Ticket.find()
     return res.json(tickets);
   
@@ -27,16 +28,15 @@ const getTicket=asyncWrapper(async(req,res,next)=>{
     return res.json(ticket)
 
       
-})
+});
 
 const createTicket =asyncWrapper( async (req, res) => {
-
 
     const fieldsToCreate = _.pick(req.body, [
         // 'customer',
         'imagePath',
         'description',
-        'priority'
+        // 'priority'
     ]);
     fieldsToCreate.customer=req.user.id
     const ticket = new Ticket(fieldsToCreate);
@@ -45,7 +45,7 @@ const createTicket =asyncWrapper( async (req, res) => {
     res.status(201).json(newTicket);
 
 });
-
+//updateTicket for a
 const updateTicket= asyncWrapper( async (req, res,next) => {
 
     const { errors, statusCode ,fail} = await validator(ticketIdInParams)(req,res,next);
@@ -57,11 +57,11 @@ const updateTicket= asyncWrapper( async (req, res,next) => {
     const fieldsToUpdate = _.pickBy(req.body, (value) => value !== '');
     const allowedFields = [
     //   'customer',
-      'imagePath',
-      'description',
-    //   'technician',
+    //   'imagePath',
+    //   'description',
+      'technician',
       'priority',
-      'status',
+    //   'status',
     ];
     const filteredFields = _.pick(fieldsToUpdate, allowedFields);
   
@@ -74,6 +74,8 @@ const updateTicket= asyncWrapper( async (req, res,next) => {
 });
 
 const deleteTicket = asyncWrapper( async (req, res) => {
+    const { errors, statusCode ,fail} = await validator(ticketIdInParams)(req,res,next);
+    if(fail) throw ({errors:errors.id ,statusCode:statusCode});
 
     await checkRoleForTicket(true);
 
@@ -82,9 +84,30 @@ const deleteTicket = asyncWrapper( async (req, res) => {
 
     return res.json({ message: "Ticket deleted" });
 
-  });
+});
 
-  
+const giveToTheTechnician =  asyncWrapper( async (req, res,next) => {
+    const { errors, statusCode ,fail} = await validator(ticketIdInParams)(req,res,next);
+    if(fail) throw ({errors:errors.id ,statusCode:statusCode});
+
+    const technician= await User.findById(req.body.technician_id); 
+    // const ticket = await Ticket.findById(req.params.id); 
+    const updatedTicket = await Ticket.findByIdAndUpdate(
+        req.params.id,
+        {
+             technician: req.body.technician_id ,
+             status: "In Progress",
+             priority: req.body.priority
+
+        },
+        // { new: true }
+      );
+
+    return res.json({
+        success:1,
+        message:`The ticket was given to the technician, ${technician.name}`
+    })
+});
 
 
 
@@ -93,5 +116,6 @@ module.exports={
     getTicket,
     createTicket,
     updateTicket,
-    deleteTicket
+    deleteTicket,
+    giveToTheTechnician
 }

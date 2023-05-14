@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const {getTickets ,getTicket , createTicket ,updateTicket ,deleteTicket}=require('../controllers/ticket.controller');
+const {getTickets ,getTicket , createTicket ,updateTicket ,deleteTicket ,giveToTheTechnician}=require('../controllers/ticket.controller');
 const { verifyToken,  checkRoleForTicket} = require("../utils/utils");
 const {upload} =require('../multer')
+const {isAdmin,isAdminOrMe}=require('../middlewares/admin.middlewre');
 
 // GET all tickets
 router.get("/", [verifyToken, checkRoleForTicket(true)], getTickets);
@@ -21,5 +22,10 @@ router.patch("/:id",[upload.none(),  verifyToken,checkRoleForTicket(false)  /* ,
 
 // DELETE a ticket by ID
 router.delete("/:id",[ verifyToken],  deleteTicket);
+
+
+// Give ticket To The Technician
+router.post("/giveToTheTechnician/:id", [upload.none(),verifyToken,isAdmin], [giveToTheTechnician]);
+
 
 module.exports = router;

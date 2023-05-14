@@ -105,7 +105,7 @@ function getAccessToken(userPayload){
 
     var secretAccessKey=process.env.JWT_ACCESS_TOKEN_SECRET
     // var expiresAccessIn=process.env.ACCESS_TOKEN_EXPIRES_IN
-    var expiresAccessIn=1500
+    var expiresAccessIn=60*30
     console.log(expiresAccessIn);
 
     return jwt.sign({userPayload}, secretAccessKey, { expiresIn:expiresAccessIn });

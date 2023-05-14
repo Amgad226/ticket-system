@@ -1,10 +1,11 @@
 
 const asyncWrapper=require('../middlewares/async')
 const User = require('../models/user.model');
+const Ticket = require('../models/ticket.model');
 
 const {validator}= require('../validator/validator');
 const {createUserValidation,userIdInParams}= require('../validator/user.validation');
-const {createTechnicianValidation}= require('../validator/technician.validation');
+const {createTechnicianValidation,nameToSearch}= require('../validator/technician.validation');
 
 const _ = require('lodash');
 
@@ -58,7 +59,7 @@ const createTechnician=asyncWrapper(async (req, res,next) => {
 const deleteTechnician=asyncWrapper(async (req, res,next) => {
 
     const { errors, statusCode ,fail} = await validator(userIdInParams)(req,res,next);
-    if(fail) throw ({errors:errors.id ,statusCode:statusCode});
+    if(fail) throw ({errors:errors ,statusCode:statusCode});
   
     await User.findByIdAndDelete(req.params.id);
   
@@ -68,12 +69,35 @@ const deleteTechnician=asyncWrapper(async (req, res,next) => {
     });
 });
 
+const getTechnicianTickets=asyncWrapper(async (req, res,next) => {
+
+    const tickets = await Ticket.find({
+        technician:req.user.id
+});
+   return  res.json(tickets);
+
+});
 
 
+const searchOnTechnicianByName=asyncWrapper(async (req, res,next) => {
+    const { errors, statusCode ,fail} = await validator(nameToSearch)(req,res,next);
+
+    if(fail) throw ({errors:errors ,statusCode:statusCode});
+    
+    const name = req.body.name;
+
+    const technician_by_name = await User.find({ name: { $regex: name, $options: "i" } ,role:"technician"  });
+
+    return res.status(200).json(technician_by_name)
+
+
+})
 module.exports={
     getTechnicians,
     getTechnician,
     createTechnician,
-    deleteTechnician
+    deleteTechnician,
+    getTechnicianTickets,
+    searchOnTechnicianByName
 
 }

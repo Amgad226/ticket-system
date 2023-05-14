@@ -47,7 +47,7 @@ const createTechnicianValidation = async(req) => {
     }
 
     if (!body.position) {
-      addToErrors(errors,'name','position is required')
+      addToErrors(errors,'position','position is required')
       fail=true
     }
 
@@ -68,6 +68,27 @@ const createTechnicianValidation = async(req) => {
     };
 };
 
+const nameToSearch = async(req) => {
+
+  const body  =req.body; 
+  let errors = {};
+  let fail = false;
+  let code =400;
+
+  if (!body.name) {
+    addToErrors(errors,'name','name is required')
+    fail = true;
+  }
+console.log(errors, 'from validatior');
+  return {
+    errors:errors,
+    fail:fail,
+    statusCode:code
+};
+
+}
 
 
-module.exports = {createTechnicianValidation};
+
+
+module.exports = {createTechnicianValidation,nameToSearch};

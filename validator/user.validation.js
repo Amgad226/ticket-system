@@ -12,10 +12,6 @@ const createUserValidation = async(req) => {
       fail = true;
     }
 
-    if (!body.username) {
-      addToErrors(errors,'username','username is required')
-      fail = true;
-    }
 
     const user = await User.findOne({ username: body.username });
     if (user) {
