@@ -6,6 +6,47 @@ const isAdmin = async (req,res,next)=>{
      : res.status(403).json({message:"only admins"});
 
 }
+const isUser = async (req,res,next)=>{
+  (req.user.role == "user" )
+   ? next() 
+   : res.status(403).json({message:"only user"});
+
+}
+const isManager = async (req,res,next)=>{
+  (req.user.role == "manager" )
+   ? next() 
+   : res.status(403).json({message:"only manager"});
+
+}
+const isManagerOrUser = async (req,res,next)=>{
+  (req.user.role == "manager" || req.user.role == "user" )
+   ? next() 
+   : res.status(403).json({message:"only manager | user"});
+
+}
+const ManagerOwnerTheChat = async (req,res,next)=>{
+  (req.user.role == "manager" /* && manager is owner the chat */  )
+   ? next() 
+   : res.status(403).json({message:"only owner chat manager "});
+
+}
+const isAdminOrUserOwner = async (req,res,next)=>{
+  (req.user.role == "admin" /* && user is owner the chat */  )
+   ? next() 
+   : res.status(403).json({message:"only owner chat user | user "});
+
+}
+
+
+
+const isAdminOrUser = async (req,res,next)=>{
+  (req.user.role == "admin"  || req.user.role == "user"  )
+   ? next() 
+   : res.status(403).json({message:"only admin | user "});
+
+}
+
+
 
 const isAdminOrTechnicianIsMe= async (req,res,next)=>{
     const userRole = req.user.role;
@@ -28,5 +69,12 @@ const isAdminOrTechnicianIsMe= async (req,res,next)=>{
 }
 
 module.exports={
-    isAdmin,isAdminOrTechnicianIsMe
+    isAdmin,
+    isAdminOrTechnicianIsMe,
+    isAdminOrUser,
+    isUser,
+    isAdminOrUserOwner,
+    isManager,
+    isManagerOrUser,
+    ManagerOwnerTheChat
 }

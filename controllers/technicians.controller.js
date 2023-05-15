@@ -62,7 +62,7 @@ const deleteTechnician=asyncWrapper(async (req, res,next) => {
     if(fail) throw ({errors:errors ,statusCode:statusCode});
   
     await User.findByIdAndDelete(req.params.id);
-  
+  accept
     res.json({
       success: 1,
       message: "Data deleted successfully.",

@@ -15,7 +15,8 @@ var usersRouter = require("./routes/users.route");
 var ticketsRouter = require("./routes/tickets.route");
 var commentsRouter = require("./routes/comments.route");
 var techniciansRouter = require("./routes/technicians.route");
-
+var adminConversationsRouter =require("./routes/admin.conversations.route");
+var managerConversationsRouter =require("./routes/manager.conversations.route");
 var app = express();
 
 // io.on('connection', (socket) => {
@@ -33,6 +34,8 @@ app.use("/users", usersRouter);
 app.use("/tickets", ticketsRouter);
 app.use("/comments", commentsRouter);
 app.use("/technicians", techniciansRouter);
+app.use("/admin/conversations", adminConversationsRouter);
+app.use("/manager/conversations", managerConversationsRouter);
 
 
 // not Found route 

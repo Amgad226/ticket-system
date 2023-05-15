@@ -4,10 +4,21 @@ const path = require("path");
 const fs = require("fs");
 
 const ticketSchema = new mongoose.Schema({
+  //user_id
   customer: {
     type: mongoose.SchemaTypes.ObjectId,
     ref: "Customer",
     required: [true, "Customer not added"],
+  },
+  //user_id for manager
+  manager: {
+    type: mongoose.SchemaTypes.ObjectId,
+    ref: "Customer",
+  },
+  //user_id for technician
+  technician: {
+    type: mongoose.SchemaTypes.ObjectId,
+    ref: "Technician",
   },
   creationDate: {
     type: Date,
@@ -20,10 +31,6 @@ const ticketSchema = new mongoose.Schema({
   description: {
     type: String,
     required: [true, "Description not added"],
-  },
-  technician: {
-    type: mongoose.SchemaTypes.ObjectId,
-    ref: "Technician",
   },
   priority: {
     type: String,
@@ -46,23 +53,3 @@ const ticketSchema = new mongoose.Schema({
 const Ticket = mongoose.model("Ticket", ticketSchema);
 module.exports = Ticket;
 
-///////////////////////////////////////////////// Upload Images ////////////////////////////////////////////
-const {upload} =require('../multer')
-
-ticketSchema.pre("save", upload.single("image"), function (next) {
-  if (!this.isModified("image") || !this.file) {
-    return next();
-  }
-  this.imagePath = path.join(__dirname, "/Images", this.file.filename);
-  next();
-});
-
-///////////////////////////////////////////////// Show Images ////////////////////////////////////////////
-ticketSchema.statics.showImage = function (res) {
-  if (fs.existsSync(this.imagePath)) {
-    const stream = fs.createReadStream(this.imagePath);
-    stream.pipe(res);
-  } else {
-    res.send("Image not found!");
-  }
-};
