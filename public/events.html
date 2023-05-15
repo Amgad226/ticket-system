@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css.css" />
+    <title>Document</title>
+</head>
+
+<body class="light dark">
+    <div id="nav" class="color-light">
+       <h1> Socket.io</h1>
+       <!-- <hr> -->
+    </div>
+    <div class="center">
+        <!-- <div id="messages-container" style="display: block"> -->
+            <div class="container darker" style=>
+                <div class="event" id="event1">
+                    <div  class="event-title" style="font-size: larger;font-weight:900;">event name</div>
+                    <div  class="event-time" style="font-size: larger;font-weight:900;">time</div>
+                    <div class="show-more caret"></div>
+                </div>
+                <div class="event-body d-none">
+                    <!-- <div class="json-container"> -->
+                        
+                        <pre>{"name": "amgad", "age": 10}</pre>
+                      <!-- </div> -->
+                </div>
+            </div>
+        <!-- </div> -->
+        <div id="messages-container" style="display: block">
+        </div>
+
+   
+       
+    </div>
+    <button style="position: fixed; top: 100px;" id="toggle-button">Toggle Mode</button>
+
+    <!-- <button style="position: fixed; top: 202px;" onclick="fun()">send</button> -->
+</body>
+
+</html>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.0/purify.min.js"></script> -->
+<!-- <script src="./cdn.js"></script> -->
+
+<!-- <script src="./jquery.js"></script> -->
+<script src="./socket.io.js"></script>
+<script src="./index.js"></script>

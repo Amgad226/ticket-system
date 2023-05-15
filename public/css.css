@@ -1,0 +1,142 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+  background-color: #f5f5f5;
+}
+#nav {position: fixed;top: 0;left: 0;right: 0;z-index: 9999; /* Set the z-index to ensure the navbar is always on top */
+}
+
+.center {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.container {
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 20px;
+  /* background-color: #fff; */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.container.darker {
+  background-color: #20202e;
+}
+.container.lighter {
+  background-color: #eee;
+}
+
+.event {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+.event-title {
+  width: 85%;
+
+  font-weight: bold;
+  margin-right: 10px;
+}
+.event-time{
+  width: 10%;
+
+}
+
+.event-body {
+
+  padding: 10px;
+  margin-top: 10px;
+  white-space: pre-wrap;
+}
+
+.show-more {
+  width: 5%;
+  height: 20px;
+  margin-left: 10px;
+  border-radius: 50%;
+  background-color: #333;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.show-more:hover {
+  background-color: #444;
+}
+
+.show-more.caret {
+  background-image: url("data:image/svg+xml,%3Csvg class='caret' xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M3.05669 6.97869L8.00002 12L12.9434 6.97869C13.4627 6.45069 13.4627 5.59135 12.9434 5.06335C12.424 4.53535 11.5774 4.53535 11.0574 5.06335L8.00002 8.16936L4.94202 5.06335C4.69002 4.80735 4.35535 4.66669 3.99935 4.66669C3.64335 4.66669 3.30869 4.80735 3.05669 5.06335C2.53669 5.59135 2.53669 6.45135 3.05669 6.97869Z' fill='%23fff'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.show-more.caret.up {
+  transform: rotate(180deg);
+}
+
+.d-none {
+  display: none;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #a7a7a7;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #decf06;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #111118;
+}
+.light {
+  background-color: #e4e7f7;
+  color: #e4e7f7;
+}
+
+.dark {
+  background-color: #121219;
+  /* color: white; */
+  color:#db07eb;
+
+}
+.color-dark{
+  color:#121219;
+
+}
+.color-light{
+  color: #db07eb;
+
+}
+
+
+#toggle-button {
+  position: fixed;
+  top: 100px;
+  /* right: 20px; */
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: #333;
+  color: #fff;
+  cursor: pointer;
+}
+
+#toggle-button:hover {
+  background-color: #555;
+}

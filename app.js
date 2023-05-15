@@ -18,6 +18,9 @@ var techniciansRouter = require("./routes/technicians.route");
 
 var app = express();
 
+// io.on('connection', (socket) => {
+//   console.log('a user connected');
+// });
 app.use(logger("dev"));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -39,7 +42,7 @@ app.use(notFound);
 // connect on DataBase 
 // connectDB(process.env.DATABASE_URI)
 const uri =  process.env.DATABASE_URI;
-mongoose.connect(uri, {
+ mongoose.connect(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -48,7 +51,7 @@ const db = mongoose.connection;
 db.on("connected", () => {
   console.log("Connected to MongoDB!");
 });
-
+// 
 db.on("error", (error) => {
   console.log("Error connecting to MongoDB:", error);
 });
