@@ -18,6 +18,13 @@ const tickets = await Ticket.find()
   
 });
 
+const getUnassignedTickets= asyncWrapper(async (req, res) => {
+
+    const tickets = await Ticket.find({technician:null})
+        return res.json(tickets);
+      
+    });
+
 const getTicket=asyncWrapper(async(req,res,next)=>{
 
 
@@ -117,5 +124,6 @@ module.exports={
     createTicket,
     updateTicket,
     deleteTicket,
-    giveToTheTechnician
+    giveToTheTechnician,
+    getUnassignedTickets,
 }

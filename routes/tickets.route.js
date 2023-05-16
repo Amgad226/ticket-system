@@ -1,31 +1,35 @@
 const express = require("express");
 const router = express.Router();
-const {getTickets ,getTicket , createTicket ,updateTicket ,deleteTicket ,giveToTheTechnician}=require('../controllers/ticket.controller');
-const { verifyToken,  checkRoleForTicket} = require("../utils/utils");
+const {getTickets ,getTicket , createTicket ,updateTicket ,deleteTicket ,giveToTheTechnician,getUnassignedTickets}=require('../controllers/ticket.controller');
+const { verifyToken} = require("../middlewares/auth.middleware");
+
 const {upload} =require('../multer')
-const {isAdmin }=require('../middlewares/admin.middlewre');
+const {isAdmin ,isAdminOrManager, isUserAndNotTicketOwner ,isUser,isManager}=require('../middlewares/roles.middlewre');
 
-// GET all tickets
-router.get("/", [verifyToken, checkRoleForTicket(true)], getTickets);
 
-// GET a single ticket by ID
-router.get("/:id", [verifyToken, checkRoleForTicket(false)], getTicket   );
+// GET all tickets //only admin or manager can access to this route
+router.get("/", [verifyToken, isAdminOrManager], getTickets);
 
-// CREATE a new ticket
-router.post("/", [upload.none(),verifyToken, checkRoleForTicket(false)], createTicket);
+// GET all tickets //only admin or manager can access to this route
+router.get("/unassigned", [verifyToken, isAdminOrManager], getUnassignedTickets);
+
+// GET a single ticket by ID  //if user and not your ticket access deny else if you admin or tech or manager you can access
+router.get("/:id", [verifyToken, isUserAndNotTicketOwner], getTicket   );
+
+// CREATE a new ticket // any one can create a new ticket 
+router.post("/", [upload.none(),verifyToken /* isUser*/], createTicket);
 
 // handle if send PATCH request on users without id in url
 router.patch('/', (req, res) => {  return res.status(400).json({ message: 'You must provide an ID in the URL.' });});
 
-// UPDATE a ticket by ID
-router.patch("/:id",[upload.none(),  verifyToken,checkRoleForTicket(false)  /* ,getTicket,*/ ], updateTicket);
+// UPDATE a ticket by ID  //if user and not your ticket access deny else if you admin or tech or manager you can access
+router.patch("/:id",[upload.none(),  verifyToken,isManager], updateTicket);
 
-// DELETE a ticket by ID
-router.delete("/:id",[ verifyToken],  deleteTicket);
+// DELETE a ticket by ID // any one can delete the ticket 
+router.delete("/:id",[ verifyToken ,isManager],  deleteTicket);
 
 
 // Give ticket To The Technician
-router.post("/giveToTheTechnician/:id", [upload.none(),verifyToken,isAdmin], [giveToTheTechnician]);
-
+router.post("/giveToTheTechnician/:id", [upload.none(),verifyToken,isManager], [giveToTheTechnician]);
 
 module.exports = router;

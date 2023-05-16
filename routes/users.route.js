@@ -1,14 +1,18 @@
 const {getUsers, getUser ,addUser,updateUser,deleteUser}=require('../controllers/user.controller')
 const {login, logout,token,getAccessTokenFromRefresh}=require('../controllers/auth.controller')
-const {  /* getUser,*/  verifyToken,  checkRoleForUser,  updateUserDTO,} = require("../utils/utils");
+const { verifyToken} = require("../middlewares/auth.middleware");
+
 const {upload} =require('../multer')
 const express = require("express");
 const router = express.Router();
+
+const {isNotUser,isUserOwnerOrAbove}=require('../middlewares/roles.middlewre');
+
 // Get all users
-router.get("/",[ verifyToken,checkRoleForUser(["admin", "manager", "technician"]) ], getUsers);
+router.get("/",[ verifyToken,isNotUser ], getUsers);
 
 // Get one user by ID
-router.get("/:id", [ verifyToken,checkRoleForUser(["admin", "manager", "technician"], true)],getUser);
+router.get("/:id", [ verifyToken,isUserOwnerOrAbove],getUser);
 
 // Create a new user
 router.post("/",[ upload.none(),verifyToken] ,addUser );

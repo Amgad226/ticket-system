@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const {  getConversations,getConversation ,deleteConversation,getConversationMessages}=require('../controllers/manager.conversation.controller');
-const { verifyToken} = require("../utils/utils");
+const { verifyToken} = require("../middlewares/auth.middleware");
 const {upload} =require('../multer')
 
-const {isAdmin,isUser ,isManager,isManagerOrUser,ManagerOwnerTheChat}=require('../middlewares/admin.middlewre');
+const {isAdmin,isUser ,isManager,isManagerOrUser,ManagerOwnerTheChat}=require('../middlewares/roles.middlewre');
 
 
 // GET all manager_conversation

@@ -1,10 +1,11 @@
 const express = require("express");
 const router = express.Router();
 // const {}=require('../controllers/technicians.controller');
-const { verifyToken} = require("../utils/utils");
+const { verifyToken} = require("../middlewares/auth.middleware");
+
 const {upload} =require('../multer')
 
-const {isAdmin,isUser,isAdminOrUser,isAdminOrUserOwner}=require('../middlewares/admin.middlewre');
+const {isAdmin,isUser,isAdminOrUser,isAdminOrUserOwner}=require('../middlewares/roles.middlewre');
 
 
 // GET all messages
