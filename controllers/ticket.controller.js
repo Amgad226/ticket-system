@@ -6,8 +6,6 @@ const {validator}= require('../validator/validator');
 const {ticketIdInParams}= require('../validator/ticket.validation');
 
 
-const {checkRoleForTicket,storeTicketInRes} = require("../utils/utils");
-
 const _ = require('lodash');
 
 
