@@ -7,6 +7,11 @@ const { verifyToken} = require("../middlewares/auth.middleware");
 
 const {isTechnician,isAdminOrManagerOrTechnicianIsMe, isAdminOrManager}=require('../middlewares/roles.middlewre');
 
+//get all tickets that technician have
+// isTechnician check if the user logged in is technician or manager
+router.get("/getTickets", [verifyToken, isTechnician ], getTechnicianTickets);
+
+
 
 // GET all technician
 // isAdminOrManager check if the user logged in is admin or manager
@@ -33,9 +38,6 @@ router.delete("/:id", [verifyToken ,isAdminOrManager], deleteTechnician);
 router.post("/search", [handleSendByFormData,verifyToken ,isAdminOrManager], searchOnTechnicianByName);
 
 
-//get all tickets that technician have
-// isTechnician check if the user logged in is technician or manager
-router.get("/getTickets", [verifyToken, isTechnician ], getTechnicianTickets);
 
 
 

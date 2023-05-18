@@ -30,6 +30,6 @@ router.delete("/:id",[ verifyToken ,isManager],  deleteTicket);
 
 
 // Give ticket To The Technician
-router.post("/giveToTheTechnician/:id", [handleSendByFormData,verifyToken,isManager], [giveToTheTechnician]);
+router.post("/giveToTheTechnician", [handleSendByFormData,verifyToken,isManager], [giveToTheTechnician]);
 
 module.exports = router;

@@ -19,8 +19,7 @@ const getTechnicians=asyncWrapper(async (req, res) => {
 
 const getTechnician=asyncWrapper(async (req, res,next) => {
 
-    const { errors, statusCode ,fail} = await validator(userIdInParams)(req,res,next);
-    if(fail) throw ({errors:errors.id ,statusCode:statusCode});
+    await validator(userIdInParams)(req,res,next);
 
     const user = await User.find({role:"technician" , _id:req.params.id});
     res.json(user);
@@ -29,11 +28,8 @@ const getTechnician=asyncWrapper(async (req, res,next) => {
 
 const createTechnician=asyncWrapper(async (req, res,next) => {
 
-    const { errors, statusCode ,fail} = await validator(createTechnicianValidation)(req,res,next);
-    if(fail) throw ({errors:errors ,statusCode:statusCode});
+    await validator(createTechnicianValidation)(req,res,next);
    
-
-
     const fieldsToCreate = _.pick(req.body, [
         'username',
         'password',
@@ -58,8 +54,7 @@ const createTechnician=asyncWrapper(async (req, res,next) => {
 
 const deleteTechnician=asyncWrapper(async (req, res,next) => {
 
-    const { errors, statusCode ,fail} = await validator(userIdInParams)(req,res,next);
-    if(fail) throw ({errors:errors ,statusCode:statusCode});
+    await validator(userIdInParams)(req,res,next);
   
     await User.findByIdAndDelete(req.params.id);
   accept
@@ -80,9 +75,8 @@ const getTechnicianTickets=asyncWrapper(async (req, res,next) => {
 
 
 const searchOnTechnicianByName=asyncWrapper(async (req, res,next) => {
-    const { errors, statusCode ,fail} = await validator(nameToSearch)(req,res,next);
+    await validator(nameToSearch)(req,res,next);
 
-    if(fail) throw ({errors:errors ,statusCode:statusCode});
     
     const name = req.body.name;
 

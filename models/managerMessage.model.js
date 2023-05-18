@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const messageSchema = new mongoose.Schema({
+const managerMessageSchema = new mongoose.Schema({
  
   customer: {
     type: mongoose.SchemaTypes.ObjectId,
@@ -9,8 +9,8 @@ const messageSchema = new mongoose.Schema({
   },
   conversation: {
     type: mongoose.SchemaTypes.ObjectId,
-    ref: "Customer",
-    required: [true, "conversation id not added"],
+    ref: "ManagerConversation",
+    required: [true, "manager_conversation_id not added"],
   },
   body: {
     type: String,
@@ -23,6 +23,6 @@ const messageSchema = new mongoose.Schema({
 
 });
 
-const Message = mongoose.model('Message', messageSchema);
+const ManagerMessage = mongoose.model('ManagerMessage', managerMessageSchema);
 
-module.exports = Message;
+module.exports = ManagerMessage;

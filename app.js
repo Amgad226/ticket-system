@@ -32,7 +32,7 @@ app.use("/tickets", ticketsRouter);
 app.use("/comments", commentsRouter);
 app.use("/technicians", techniciansRouter);
 app.use("/admin/conversations", adminConversationsRouter);
-app.use("/a", managerConversationsRouter);
+app.use("/manager/conversations", managerConversationsRouter);
 
 app.use(RouteNotFound);
 
@@ -41,11 +41,11 @@ const server = http.createServer(app);
 
 const io =socket(server,{cors:"*"})
 io.on('connection', (socket) => {
-  socket.emit('user-connection', 'new user connection');
+  socket.emit('user-id', 'user-connection','new user connection');
 
   socket.on('disconnect', () => {
     console.log('disconnect');
-    socket.broadcast.emit('user-disconnect', 'user disconnect');
+    socket.broadcast.emit('user-id','user-disconnect', 'user disconnect');
   });
 });
 

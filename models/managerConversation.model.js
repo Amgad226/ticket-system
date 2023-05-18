@@ -10,12 +10,15 @@ const managerConversationSchema = new mongoose.Schema({
   last_message_id: {
     type: mongoose.SchemaTypes.ObjectId,
     ref: "Message",
-    required: true
   },
 
   createdAt: {
     type: Date,
     default: Date.now,
+  },
+  active: {
+    type: Boolean,
+    default: false,
   },
 
 });

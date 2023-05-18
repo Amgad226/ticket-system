@@ -17,6 +17,9 @@ const getUsers=asyncWrapper(async (req, res) => {
 const getUser=asyncWrapper(async (req, res,next) => {
   //  return res.json(req.user)
  
+ await validator(userIdInParams)(req,res,next);
+  // if(fail) throw ({errors:errors.id ,statusCode:statusCode});
+  
     const user = await User.findById(req.params.id); 
     // if(user==null){
     //   return res.status(404).json({ message: "Cannot find user" });
@@ -27,8 +30,7 @@ const getUser=asyncWrapper(async (req, res,next) => {
 
 const addUser=asyncWrapper( async  (req, res,next) => {
 
-    const { errors, statusCode ,fail} = await validator(createUserValidation)(req,res,next);
-    if(fail) throw ({errors:errors ,statusCode:statusCode});
+   await validator(createUserValidation)(req,res,next);
    
     const user=new User(req.body);
 
@@ -41,8 +43,7 @@ const addUser=asyncWrapper( async  (req, res,next) => {
 const updateUser= asyncWrapper(async (req, res,next) => {
 
 
-    const { errors, statusCode ,fail} = await validator(userIdInParams)(req,res,next);
-    if(fail) throw ({errors:errors.id ,statusCode:statusCode});
+    await validator(userIdInParams)(req,res,next);
   
    
     const user = await User.findById(req.params.id); 
@@ -67,20 +68,6 @@ const updateUser= asyncWrapper(async (req, res,next) => {
   
     const updatedUser = await user.save();
 
-
-    // const authHeader = req.header("authorization");
-    // const oldAccessToken = authHeader&& authHeader.split(' ')[1]
-    // await new RevokedToken({ token: oldAccessToken }).save();
-
-    
-  //   var userPayload ={
-  //     id:          updatedUser._id,
-  //     username:    updatedUser.username,
-  //     name:        updatedUser.name,
-  //     role:        updatedUser.role,
-  // }
-
-  // var newAccessToken= getAccessToken(userPayload)
     res.json({
       success: 1,
       message: "Data updated successfully.",
@@ -92,8 +79,7 @@ const updateUser= asyncWrapper(async (req, res,next) => {
 
 const deleteUser=asyncWrapper(async (req, res,next) => {
 
-    const { errors, statusCode ,fail} = await validator(userIdInParams)(req,res,next);
-    if(fail) throw ({errors:errors.id ,statusCode:statusCode});
+    await validator(userIdInParams)(req,res,next);
   
     await User.findByIdAndDelete(req.params.id);
   

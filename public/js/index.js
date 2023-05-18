@@ -19,7 +19,7 @@ socket.on('connect_timeout', timeout => {
 }); 
 
 socket.onAny((event, ...args) => {
-    // console.log('listen on '+event  +' on Any ');
+    console.log(event ,args);
     append(event , args)
 });
 function printJsonToHtml(obj){
@@ -27,8 +27,10 @@ function printJsonToHtml(obj){
 }
 
 const append= (event ,  args)=>{
-  console.log(args[0].date);
-  const formattedHtml =printJsonToHtml( args[0]);
+  const event_value= args[1];
+  const event_key= args[0];
+  console.log(event_value);
+  const formattedHtml =printJsonToHtml( event_value);
 
 
 const messagesContainer = document.querySelector('#messages-container');
@@ -38,8 +40,9 @@ newContainer.classList.add('container', 'darker');
 
 newContainer.innerHTML = `
   <div class="event"  >
-    <div class="event-title">${event}</div>
-    <div class="event-time" >${(args[0]?.createdAt) ?formatTime(args[0].createdAt) :formatTime(Date.now())}</div>
+
+    <div class="event-title">${event} <span style="margin-left:10%"> ${event_key}</span> </div>
+    <div class="event-time" >${(event_value?.createdAt) ?formatTime(event_value.createdAt) :formatTime(Date.now())}</div>
     <div class="show-more caret"></div>
 
   </div>

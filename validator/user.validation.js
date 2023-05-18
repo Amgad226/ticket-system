@@ -92,12 +92,12 @@ const createUserValidation = async(req) => {
 
   const userIdInParams=async(req)=>{
     
-    let errors = [];
+    let errors = {}
     let fail = false;
     let code =400;
     
-    if (await isValidId( req.params.id) ==false ) {
-      addToErrors(errors,'id','not ObjectId formate ')
+    if ( isValidId( req.params.id) ==false ) {
+      addToErrors(errors,'id','user id not ObjectId formate ')
       fail=true; 
     }
 

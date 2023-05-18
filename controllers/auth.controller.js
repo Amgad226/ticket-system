@@ -73,9 +73,27 @@ const token=async (req, res) => {
    return res.send(accessToken,);
 }
 
-const logout= async(req, res) => {
+const whoIsMe = async (req,res,next)=>{
+    return res.json(req.user)
+    // const accessToken = getToken()
+    // jwt.verify(accessToken, process.env.JWT_ACCESS_TOKEN_SECRET, (err, user) => {
+        // if (err) {
+        //   return res.status(403).json({ message: 'Invalid access token' });
+        // }
+    //  
+        // return res.status(200).json(user.userPayload);
+    //   });
+   
+}
+
+function getToken(){
     const authHeader = req.header("authorization");
-    const accessToken = authHeader&& authHeader.split(' ')[1]
+    return authHeader&& authHeader.split(' ')[1]
+
+}
+const logout= async(req, res) => {
+  
+    const accessToken = getToken()
 
     // revoke the access token
     await new RevokedToken({ token: accessToken }).save();
@@ -110,7 +128,7 @@ function getAccessToken(userPayload){
 
     var secretAccessKey=process.env.JWT_ACCESS_TOKEN_SECRET
     // var expiresAccessIn=process.env.ACCESS_TOKEN_EXPIRES_IN
-    var expiresAccessIn=60*30
+    var expiresAccessIn=60*60*24
     console.log(expiresAccessIn);
 
     return jwt.sign({userPayload}, secretAccessKey, { expiresIn:expiresAccessIn });
@@ -120,13 +138,16 @@ function getAccessToken(userPayload){
 function getRefreshToken(userPayload){
     var secretRefreshKey=process.env.JWT_REFRESH_TOKEN_SECRET
     // var expiresRefreshIn=process.env.REFRESH_TOKEN_EXPIRES_IN
-    var expiresRefreshIn=6000
+    var expiresRefreshIn=60*60*24*2
     return  jwt.sign({userPayload}, secretRefreshKey, { expiresIn:expiresRefreshIn });
 }
+
+
 
 module.exports={
     login,
     token,
+    whoIsMe,
     logout,
     getAccessTokenFromRefresh,
     getAccessToken,
