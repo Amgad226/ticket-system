@@ -1,5 +1,5 @@
-const express = require("express");
-const router = express.Router();
+const router = require("./router");
+
 const {  getConversations,getConversation ,deleteConversation,getConversationMessages}=require('../controllers/manager.conversation.controller');
 const { verifyToken} = require("../middlewares/auth.middleware");
 const {handleSendByFormData}=require('../middlewares/form-data.middleware')

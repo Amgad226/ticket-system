@@ -1,5 +1,5 @@
-const express = require("express");
-const router = express.Router();
+const router = require("./router");
+
 const {getTechnicians ,getTechnician,createTechnician,deleteTechnician,getTechnicianTickets,searchOnTechnicianByName}=require('../controllers/technicians.controller');
 const {handleSendByFormData}=require('../middlewares/form-data.middleware')
 

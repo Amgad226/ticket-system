@@ -1,5 +1,5 @@
-var express = require('express');
-var router = express.Router();
+const router = require("./router");
+
 const fs = require('fs')
 const path= require('path');
 

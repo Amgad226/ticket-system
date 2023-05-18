@@ -1,5 +1,5 @@
-const express = require("express");
-const router = express.Router();
+const router = require("./router");
+
 const {getTickets ,getTicket , createTicket ,updateTicket ,deleteTicket ,giveToTheTechnician,getUnassignedTickets}=require('../controllers/ticket.controller');
 const { verifyToken} = require("../middlewares/auth.middleware");
 const {handleSendByFormData}=require('../middlewares/form-data.middleware')
