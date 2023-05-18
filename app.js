@@ -32,7 +32,7 @@ app.use("/tickets", ticketsRouter);
 app.use("/comments", commentsRouter);
 app.use("/technicians", techniciansRouter);
 app.use("/admin/conversations", adminConversationsRouter);
-app.use("/manager/conversations", managerConversationsRouter);
+app.use("/a", managerConversationsRouter);
 
 app.use(RouteNotFound);
 

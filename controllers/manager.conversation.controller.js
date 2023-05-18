@@ -11,7 +11,7 @@ const Ticket = require('../models/ticket.model');
 const getConversations = asyncWrapper(async (req, res) => {
 
     if(req.user.role== 'manager'){
-        const tickets  =await Ticket.find({manager:req.user.id})
+        const tickets  =await Ticket.find({manager:req.user.id},{_id})
         return res.json(tickets)
     }
     else{

@@ -1,8 +1,8 @@
-const {getUsers, getUser ,addUser,updateUser,deleteUser}=require('../controllers/user.controller')
+const express = require("express");
+const router = express.Router();const {getUsers, getUser ,addUser,updateUser,deleteUser}=require('../controllers/user.controller')
 const {login, logout,token,getAccessTokenFromRefresh}=require('../controllers/auth.controller')
 const { verifyToken} = require("../middlewares/auth.middleware");
 const {handleSendByFormData}=require('../middlewares/form-data.middleware')
-const router = require("./router");
 
 
 const {isNotUser,isUserOwnerOrAbove}=require('../middlewares/roles.middlewre');

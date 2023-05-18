@@ -1,5 +1,5 @@
-const router = require("./router");
-
+const express = require("express");
+const router = express.Router();
 const {  getConversations,getConversation ,deleteConversation,getConversationMessages}=require('../controllers/manager.conversation.controller');
 const { verifyToken} = require("../middlewares/auth.middleware");
 const {handleSendByFormData}=require('../middlewares/form-data.middleware')
@@ -9,7 +9,8 @@ const { findAndValidationConversation } = require("../middlewares/admin.conversa
 
 
 // GET all manager_conversation
-router.get("/", [verifyToken, isManagerOrUser ] ,getConversations);
+// router.get("/", [verifyToken, isManagerOrUser ] ,getConversations);
+router.get("/", [verifyToken, isManagerOrUser ] ,(req,res)=>{res.json('d')});
 
 // GET a single manager_conversation by ID
 router.get("/:id", [verifyToken,isManagerOrUser], getConversation);
