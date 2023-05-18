@@ -10,7 +10,7 @@ const adminConversationSchema = new mongoose.Schema({
   last_message_id: {
     type: mongoose.SchemaTypes.ObjectId,
     ref: "Message",
-    required: true
+    // required: true
   },
 
   createdAt: {

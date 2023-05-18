@@ -1,3 +1,4 @@
+const AdminConversation = require('../models/adminConversation.model');
 const Ticket = require('../models/ticket.model');
 const User = require('../models/user.model');
 
@@ -43,12 +44,7 @@ const ManagerOwnerTheChat = async (req,res,next)=>{
    : res.status(403).json({message:"only owner chat manager "});
 
 }
-const isAdminOrUserOwner = async (req,res,next)=>{
-  (req.user.role == "admin" /* && user is owner the chat */  )
-   ? next() 
-   : res.status(403).json({message:"only owner chat user | user "});
 
-}
 
 const isAdminOrManager = async (req,res,next)=>{
   (req.user.role == "admin" ||req.user.role == "manager"  )
@@ -82,16 +78,10 @@ const isAdminOrUser = async (req,res,next)=>{
 const isUserOwnerOrAbove = async (req,res,next)=>{
 
   if(req.user.role == "user" && req.user.id != req.params.id)
-  return res.status(403).json({message:"access denied"});
+  return res.status(403).json({message:"access denied Middleware"});
   
   return next();
   
-
-
-  (req.user.role == "admin"  || req.user.role == "user"  )
-   ? next() 
-   : res.status(403).json({message:"only admin | user "});
-
 }
 
 
@@ -125,7 +115,6 @@ module.exports={
     isAdminOrUser,
     isManagerOrUser,
     isAdminOrManagerOrTechnicianIsMe,
-    isAdminOrUserOwner,
     ManagerOwnerTheChat,
     isUserAndNotTicketOwner,
 }

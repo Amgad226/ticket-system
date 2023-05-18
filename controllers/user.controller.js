@@ -4,7 +4,10 @@ const User = require("../models/user.model");
 const {validator}= require('../validator/validator');
 const {createUserValidation,userIdInParams}= require('../validator/user.validation');
 
+const {getAccessToken}= require('./auth.controller')
 const _ = require('lodash');
+const RevokedToken = require('../models/revokedToken.model');
+const Tokens = require('../models/tokens.model');
 
 const getUsers=asyncWrapper(async (req, res) => {
     const users = await User.find();
@@ -12,12 +15,14 @@ const getUsers=asyncWrapper(async (req, res) => {
 });
 
 const getUser=asyncWrapper(async (req, res,next) => {
-   
+  //  return res.json(req.user)
+ 
     const user = await User.findById(req.params.id); 
     // if(user==null){
     //   return res.status(404).json({ message: "Cannot find user" });
     // }
     res.json(user);
+    // , infoByToken:req.user ,token:req.token
 });
 
 const addUser=asyncWrapper( async  (req, res,next) => {
@@ -61,11 +66,26 @@ const updateUser= asyncWrapper(async (req, res,next) => {
     user.set(filteredFields);
   
     const updatedUser = await user.save();
-  
+
+
+    // const authHeader = req.header("authorization");
+    // const oldAccessToken = authHeader&& authHeader.split(' ')[1]
+    // await new RevokedToken({ token: oldAccessToken }).save();
+
+    
+  //   var userPayload ={
+  //     id:          updatedUser._id,
+  //     username:    updatedUser.username,
+  //     name:        updatedUser.name,
+  //     role:        updatedUser.role,
+  // }
+
+  // var newAccessToken= getAccessToken(userPayload)
     res.json({
       success: 1,
       message: "Data updated successfully.",
-      data:updatedUser
+      data:updatedUser,
+      // accessToken:newAccessToken
     });
    
 });

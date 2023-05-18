@@ -1,14 +1,14 @@
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
-const mongoose = require("mongoose");
-const bodyParser = require('body-parser');//none
-const {notFound} = require('./middlewares/not-found');
+const socket = require('socket.io');
+const http = require('http');
+const express = require("express");
+const path = require("path");
+const logger = require("morgan");
+const cookieParser = require("cookie-parser");
+const RouteNotFound= require('./middlewares/not-found');
+const {connectDB,checkExistAdmin} = require('./database/query')
+const port = (process.env.PORT || 3000);
 require('dotenv').config();
 
-
-const User = require("./models/user.model");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users.route");
@@ -19,16 +19,13 @@ var adminConversationsRouter =require("./routes/admin.conversations.route");
 var managerConversationsRouter =require("./routes/manager.conversations.route");
 var app = express();
 
-// io.on('connection', (socket) => {
-//   console.log('a user connected');
-// });
+app.use((req,res,next)=>{req.io=io;next();})
+
 app.use(logger("dev"));
 app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
-
+ 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/tickets", ticketsRouter);
@@ -37,60 +34,24 @@ app.use("/technicians", techniciansRouter);
 app.use("/admin/conversations", adminConversationsRouter);
 app.use("/manager/conversations", managerConversationsRouter);
 
-
-// not Found route 
-app.use(notFound);
+app.use(RouteNotFound);
 
 
-// connect on DataBase 
-// connectDB(process.env.DATABASE_URI)
-const uri =  process.env.DATABASE_URI;
- mongoose.connect(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-const db = mongoose.connection;
+const server = http.createServer(app);
 
-db.on("connected", () => {
-  console.log("Connected to MongoDB!");
-});
-// 
-db.on("error", (error) => {
-  console.log("Error connecting to MongoDB:", error);
-});
+const io =socket(server)
+io.on('connection', (socket) => {
+  socket.emit('user-connection', 'new user connection');
 
-db.on("disconnected", () => {
-  console.log("Disconnected from MongoDB.");
-});
-// check if an admin user already exists
-User.findOne({ role: "admin" })
-  .then((admin) => {
-    // if an admin user does not exist, create one
-    if (!admin) {
-      const adminUser = new User({
-        // name: "Admin",
-        username:"Admin",
-        email: "admin@example.com",
-        password: "password",
-        role: "admin",
-        phone:"09456",
-        region:" "
-
-      });
-      adminUser.save();
-      console.log("Admin user created");
-    }
-    else{
-      console.log("we have admin");
-    }
-  })
-  .catch((err) => {
-    console.error("Error checking for admin user:", err);
+  socket.on('disconnect', () => {
+    console.log('disconnect');
+    socket.emit('user-disconnect', 'user disconnect');
   });
+});
 
+connectDB();
+checkExistAdmin();
 
-// app.listen(process.env.PORT || 3000 , ()=>{
-  // console.log(`the server listening on ${process.env.PORT || 3000 } port`);
-// })
-module.exports = app;
-// 
+server.listen(port,()=>{
+  console.log(`server running on ${port}`);
+});

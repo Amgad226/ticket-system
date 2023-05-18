@@ -6,37 +6,64 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="css.css" />
-    <title>Document</title>
+    <title>events observer</title>
 </head>
 
-<body class="light dark">
-    <div id="nav" class="color-light">
-       <h1> Socket.io</h1>
+<body class="/*light*/ dark">
+    
+    <div>
+
+
+    <nav id="nav" style="" class="/*color-dark*/ color-light">
+        
+        <div style="display: flex;flex-direction: row;">
+            
+            <div style="width: 60%; display: flex; ">
+                <h1 class="title  "  style="border: none;border-radius: 5px;background-color: #19192d;padding: 10px;"> Socket.io</h1>
+                
+            </div>
+            <input style = "margin-top: 30px;" type="color" id="colorPicker">
+
+            <div style="width: 20%; display: flex; ">
+                <button class="/*color-dark*/ color-light nav-button" style="width: 90%;"  id="send-test-event">Send Event </button>
+                
+            </div>
+
+            <div style="width: 20%; display: flex; ">
+                <button class="/*color-dark*/ color-light nav-button" style="width: 90%;"  id="toggle-button">  Toggle Mode</button>
+                
+            </div>
+
+        </div>
+
        <!-- <hr> -->
-    </div>
     <div class="center">
         <!-- <div id="messages-container" style="display: block"> -->
-            <div class="container darker" style=>
+            <div class="container-nav   darker" style=>
                 <div class="event" id="event1">
                     <div  class="event-title" style="font-size: larger;font-weight:900;">event name</div>
                     <div  class="event-time" style="font-size: larger;font-weight:900;">time</div>
-                    <div class="show-more caret"></div>
+                    <div class="show-more caret hidden" ></div>
                 </div>
                 <div class="event-body d-none">
                     <!-- <div class="json-container"> -->
                         
-                        <pre>{"name": "amgad", "age": 10}</pre>
+                        <!-- <pre>{"name": "amgad", "age": 10}</pre> -->
                       <!-- </div> -->
                 </div>
             </div>
         <!-- </div> -->
-        <div id="messages-container" style="display: block">
+        <div id="messages-container" style="display: block;overflow-y:scroll;height: 500px; background-color: #191926;">
+            
         </div>
 
    
        
     </div>
-    <button style="position: fixed; top: 100px;" id="toggle-button">Toggle Mode</button>
+</nav>
+
+</div>
+
 
     <!-- <button style="position: fixed; top: 202px;" onclick="fun()">send</button> -->
 </body>
@@ -46,5 +73,6 @@
 <!-- <script src="./cdn.js"></script> -->
 
 <!-- <script src="./jquery.js"></script> -->
-<script src="./socket.io.js"></script>
-<script src="./index.js"></script>
+<script src="./js/socket.io.js"></script>
+<script src="./js/index.js"></script>
+<script src="./js/style.js"></script>

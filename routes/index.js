@@ -12,4 +12,11 @@ router.get('/', function(req, res, next) {
   // return res.send("<h1>hi there </h1>")
 });
 
+router.get('/send-test-event',(req,res,next)=>{
+  try{
+    req.io.emit('test-event',{  "customer": "8823","conversation": "fc62","body": "hi hi","_id": "512","createdAt": "2023-05-17T22:23:58.225Z"});
+    
+    return res.sendStatus(200);
+  }catch(r) {return res.json(e.message)}
+})
 module.exports = router;

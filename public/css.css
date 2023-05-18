@@ -9,19 +9,46 @@ body {
 }
 #nav {position: fixed;top: 0;left: 0;right: 0;z-index: 9999; /* Set the z-index to ensure the navbar is always on top */
 }
+#colorPicker{
+  transform: scale(.5);
+}
+nav{
+  /* background-color: #f2f2f2; */
+  padding: 10px;
+}
+
+.title{
+  margin: 0;
+  /* text-align: center; */
+}
 
 .center {
   max-width: 800px;
-  margin: 0 auto;
+  margin: 20px auto;
+  /* margin: 20px; */
+  border:   snow  1px;
   padding: 20px;
+  /* box-shadow: #323259; */
+  box-shadow:  0px 1px 0px, 0px 1px 6px;
 }
-
+.container-nav{
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 98%;
+  border: transparent solid .01px;
+}
 .container {
   border-radius: 5px;
   padding: 10px;
   margin-bottom: 20px;
   /* background-color: #fff; */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  /* width: 98%; */
+  border: transparent solid .01px;
+
 }
 
 .container.darker {
@@ -31,6 +58,12 @@ body {
   background-color: #eee;
 }
 
+.container-nav.darker {
+  background-color: #20202e;
+}
+.container-nav.lighter {
+  background-color: #eee;
+}
 .event {
   display: flex;
   align-items: center;
@@ -51,9 +84,9 @@ body {
 
 .event-body {
 
-  padding: 10px;
-  margin-top: 10px;
-  white-space: pre-wrap;
+  padding: 5px;
+  /* margin-top: 10px; */
+  /* white-space: pre-wrap; */
 }
 
 .show-more {
@@ -84,7 +117,9 @@ body {
 .d-none {
   display: none;
 }
-
+.hidden{
+  visibility: hidden;
+}
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -96,7 +131,7 @@ body {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #decf06;
+  background: #323247;
 }
 
 /* Handle on hover */
@@ -112,31 +147,53 @@ body {
   background-color: #121219;
   /* color: white; */
   color:#db07eb;
+  color: rgb(52, 52, 79);
 
 }
 .color-dark{
-  color:#121219;
+  color:#ffffff;
 
 }
 .color-light{
   color: #db07eb;
+  /* color:#121219; */
+
 
 }
 
 
-#toggle-button {
-  position: fixed;
+
+.nav-button{
   top: 100px;
   /* right: 20px; */
   padding: 10px;
   font-size: 16px;
   border: none;
   border-radius: 5px;
-  background-color: #333;
-  color: #fff;
+  background-color: #19192d;
+  /* color: #fff; */
   cursor: pointer;
 }
 
-#toggle-button:hover {
-  background-color: #555;
+
+.nav-button:hover {
+  background-color: #323259;
+}
+.container:hover{
+  background:rgb(52, 52, 79);
+  /* border-color: rgb(200, 200, 208); */
+  border: rgb(255, 255, 255) solid .01px;
+}
+
+.pre-body{
+  background-color: #000;
+  padding: 20px;
+}
+
+@media (max-width: 767px) {
+  .pre-body{
+    font-size: x-small;
+  }
+  /* CSS styles for small screens */
+  /* Place your styles here */
 }

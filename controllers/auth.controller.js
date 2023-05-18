@@ -2,6 +2,7 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
 const RevokedToken = require('../models/revokedToken.model');
+const Tokens = require("../models/tokens.model");
 
 
 const login =async (req, res) => {
@@ -15,9 +16,9 @@ const login =async (req, res) => {
  
     var userPayload ={
         id:          user._id,
-        username:    user.username,
-        name:        user.name,
-        role:        user.role,
+        // username:    user.username,
+        // name:        user.name,
+        // role:        user.role,
         // isActive:    user.isActive,
         // phone:       user.phone,
         // position:    user.position,
@@ -30,7 +31,11 @@ const login =async (req, res) => {
  
     const accessToken  =getAccessToken(userPayload);
     const refreshToken =getRefreshToken(userPayload);
-
+    // await Tokens.create({
+    //     access:accessToken,
+    //     refresh:refreshToken,
+    //     user_id:user._id,
+    //   })
    return res.send({
        user:user,
        accessToken:accessToken,
@@ -49,9 +54,9 @@ const token=async (req, res) => {
  
     var userPayload ={
         id:          user._id,
-        username:    user.username,
-        name:        user.name,
-        role:        user.role,
+        // username:    user.username,
+        // name:        user.name,
+        // role:        user.role,
         // isActive:    user.isActive,
         // phone:       user.phone,
         // position:    user.position,
@@ -124,4 +129,5 @@ module.exports={
     token,
     logout,
     getAccessTokenFromRefresh,
+    getAccessToken,
 }
