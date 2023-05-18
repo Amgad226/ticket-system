@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const {getTechnicians ,getTechnician,createTechnician,deleteTechnician,getTechnicianTickets,searchOnTechnicianByName}=require('../controllers/technicians.controller');
-const {upload} =require('../multer')
+const {handleSendByFormData}=require('../middlewares/form-data.middleware')
 
 const { verifyToken} = require("../middlewares/auth.middleware");
 
@@ -18,9 +18,9 @@ router.get("/:id", [verifyToken,isAdminOrManagerOrTechnicianIsMe], getTechnician
 
 
 // CREATE a new technician
-// upload.none() for use from data in post man when send data in body [form data] 
+// handleSendByFormData for use from data in post man when send data in body [form data] 
 // isAdminOrManager the user logged in is admin or manager
-router.post("/", [upload.none(),verifyToken ,isAdminOrManager], createTechnician);
+router.post("/", [handleSendByFormData,verifyToken ,isAdminOrManager], createTechnician);
 
 
 // Delete a technician by ID
@@ -30,7 +30,7 @@ router.delete("/:id", [verifyToken ,isAdminOrManager], deleteTechnician);
 
 // search a new technician
 // isAdminOrManager check if the user logged in is admin or manager
-router.post("/search", [upload.none(),verifyToken ,isAdminOrManager], searchOnTechnicianByName);
+router.post("/search", [handleSendByFormData,verifyToken ,isAdminOrManager], searchOnTechnicianByName);
 
 
 //get all tickets that technician have

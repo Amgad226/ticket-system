@@ -7,6 +7,7 @@ const createUserValidation = async(req) => {
     let fail = false;
     let code =400;
 
+    const roles= ['user','technician','manager','admin']
     if (!body.username) {
       addToErrors(errors,'username','username is required')
       fail = true;
@@ -32,6 +33,16 @@ const createUserValidation = async(req) => {
 
     if (!body.role) {
       addToErrors(errors,'role','role is required')
+      fail=true
+    }  
+
+    if (! roles.includes(body.role)) {
+      addToErrors(errors,'role',`role: ${body.role} is not a valid role`)
+      fail=true
+    }  
+    
+    if (body.role =="admin") {
+      addToErrors(errors,'role','you cant create more than one Admin')
       fail=true
     }  
 

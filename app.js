@@ -39,13 +39,13 @@ app.use(RouteNotFound);
 
 const server = http.createServer(app);
 
-const io =socket(server)
+const io =socket(server,{cors:"*"})
 io.on('connection', (socket) => {
   socket.emit('user-connection', 'new user connection');
 
   socket.on('disconnect', () => {
     console.log('disconnect');
-    socket.emit('user-disconnect', 'user disconnect');
+    socket.broadcast.emit('user-disconnect', 'user disconnect');
   });
 });
 
