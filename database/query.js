@@ -28,6 +28,7 @@ const checkExistAdmin = async()=>{
     // if an admin user does not exist, create one
     if (!admin) {
       const adminUser = new User({
+        _id:'111111111111111111111111',
         name: "Admin",
         username:"Admin",
         email: "admin@example.com",

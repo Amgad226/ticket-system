@@ -20,6 +20,10 @@ const managerConversationSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  participants: {
+    type: [Object], // Specify the field as an array
+    // required: true
+  },
 
 });
 

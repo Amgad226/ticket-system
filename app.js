@@ -1,3 +1,4 @@
+// async function all (){
 const socket = require('socket.io');
 const http = require('http');
 const express = require("express");
@@ -5,7 +6,8 @@ const path = require("path");
 const logger = require("morgan");
 const cookieParser = require("cookie-parser");
 const RouteNotFound= require('./middlewares/not-found');
-const {connectDB,checkExistAdmin} = require('./database/query')
+const {connectDB} = require('./database/query')
+const seed = require('./database/seeder/seed');
 const port = (process.env.PORT || 3000);
 require('dotenv').config();
 
@@ -49,9 +51,17 @@ io.on('connection', (socket) => {
   });
 });
 
-connectDB();
-checkExistAdmin();
-
-server.listen(port,()=>{
-  console.log(`server running on ${port}`);
-});
+async function start (){
+  await connectDB();
+  await seed()
+}
+async function listen(){
+  server.listen(port,()=>{
+    console.log(`server running on ${port}`);
+  });
+}
+async function go() {
+  await start()  
+  await listen()
+}
+go()

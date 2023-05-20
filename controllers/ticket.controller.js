@@ -45,7 +45,11 @@ const createTicket =asyncWrapper( async (req, res) => {
     ]);
     fieldsToCreate.customer=req.user.id
     const ticket = new Ticket(fieldsToCreate);
-     await ManagerConversation.create({ticket:ticket.id,})
+
+    //  await ManagerConversation.create({ticket:ticket.id,})
+     const managerConversation=new ManagerConversation({ticket:ticket.id,participants:[{user:req.user.id}]});
+     const newManagerConversation= await managerConversation.save();
+
     const newTicket = await ticket.save();
     res.status(201).json({message:"ticket  and chat with manager created wait manager assign ticket for start chat and start tech action",newTicket});
 
@@ -103,8 +107,12 @@ const giveToTheTechnician =  asyncWrapper( async (req, res,next) => {
         ticket.priority= req.body.priority
         await ticket.save();
 
-        await ManagerConversation.findOneAndUpdate({ticket:ticket_id} ,{active:true});
-
+        await ManagerConversation.findOneAndUpdate({ticket:ticket_id} ,
+            {
+                active:true,
+                $push: { participants: {manager:req.user.id} }  // Use $push to add the JSON object to the array                
+            }
+        );      
     }
 
     return res.json({
