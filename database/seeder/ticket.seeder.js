@@ -1,7 +1,7 @@
 const tickets = [
     {
       _id: "111111111111111111111111",
-      customer: "111111111111111111111111",
+      customer: "222222222222222222222222",
       creationDate: "2022-01-03T00:00:00.000Z",
       imagePath: "https://example.com/image.jpg",
       description: "Email not sending",
@@ -22,7 +22,7 @@ const tickets = [
     },
     {
       _id: "333333333333333333333333",
-      customer: "333333333333333333333333",
+      customer: "444444444444444444444444",
       creationDate: "2022-01-05T00:00:00.000Z",
       imagePath: "https://example.com/image.jpg",
       description: "Software not working",

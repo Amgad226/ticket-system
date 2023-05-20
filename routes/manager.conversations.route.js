@@ -29,8 +29,4 @@ router.post("/message", [handleSendByFormData,verifyToken ,validationConversatio
 router.get("/:id/messages", [verifyToken,isManagerOrUser], getConversationMessages);
 
 
-// GET a messages of  manager_conversation by ID
-router.get("/:id/messages", [verifyToken/*findAndValidationConversation(true)  isAdminOrUserOwner */], getConversationMessages);
-
-
 module.exports=router;

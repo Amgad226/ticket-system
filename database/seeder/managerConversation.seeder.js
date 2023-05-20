@@ -4,7 +4,7 @@ const ticketConversation = [
         // last_message_id: "2022-01-03T00:00:00.000Z",
         // createdAt: "https://example.com/image.jpg",
         // active: "Email not sending",
-        participants:[{user:'111111111111111111111111'}],
+        participants:[{id:'222222222222222222222222',role:'user'}],
 
     },  
     {
@@ -12,7 +12,7 @@ const ticketConversation = [
         // last_message_id: "2022-01-03T00:00:00.000Z",
         // createdAt: "https://example.com/image.jpg",
         // active: "Email not sending",
-        participants:[{user:'222222222222222222222222'}],
+        participants:[{id:'333333333333333333333333',role:'user'}],
 
     }, 
     {
@@ -20,7 +20,7 @@ const ticketConversation = [
         // last_message_id: "2022-01-03T00:00:00.000Z",
         // createdAt: "https://example.com/image.jpg",
         // active: "Email not sending",
-        participants:[{user:'333333333333333333333333'}],
+        participants:[{id:'444444444444444444444444',role:'user'}],
 
     }, 
 

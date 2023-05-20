@@ -6,16 +6,20 @@ const asyncWrapper = require("./async");
 
 const isManagerOrUserOwner = asyncWrapper(async (req,res,next)=>{
 
+  const ticket = await Ticket.findById(req.conversation.ticket)
     if(req.user.role == "manager" ){
-        const ticket = await Ticket.findById(req.conversation.ticket)
 
         if( req.user.id == ticket.manager) {
             return next() 
         }
     }
-    else if ( req.user.role == "user" && req.conversation.customer === req.user.id  ){
-      return next() ;
-    }
+    else if(req.user.role == "user" ){
+
+      if( req.user.id == ticket.customer) {
+          return next() 
+      }
+  }
+  
     
     return  res.status(403).json({message:"only ticket owner user or ticket responsible manager can access."});
   

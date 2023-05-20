@@ -25,6 +25,15 @@ const managerConversationSchema = new mongoose.Schema({
     // required: true
   },
 
+}
+, { toJSON: { virtuals: true } });
+
+managerConversationSchema.virtual('last_message', {
+  ref: 'ManagerMessage',
+  localField: 'last_message_id',
+  foreignField: '_id',
+  justOne: true,
+  options: { select: 'body' }
 });
 
 const ManagerConversation = mongoose.model('ManagerConversation', managerConversationSchema);

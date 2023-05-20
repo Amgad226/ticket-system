@@ -47,7 +47,7 @@ const createTicket =asyncWrapper( async (req, res) => {
     const ticket = new Ticket(fieldsToCreate);
 
     //  await ManagerConversation.create({ticket:ticket.id,})
-     const managerConversation=new ManagerConversation({ticket:ticket.id,participants:[{user:req.user.id}]});
+     const managerConversation=new ManagerConversation({ticket:ticket.id,participants:[{id:req.user.id ,role:req.user.role}]});
      const newManagerConversation= await managerConversation.save();
 
     const newTicket = await ticket.save();
@@ -110,7 +110,7 @@ const giveToTheTechnician =  asyncWrapper( async (req, res,next) => {
         await ManagerConversation.findOneAndUpdate({ticket:ticket_id} ,
             {
                 active:true,
-                $push: { participants: {manager:req.user.id} }  // Use $push to add the JSON object to the array                
+                $push: { participants: {id:req.user.id ,role:req.user.role} }  // Use $push to add the JSON object to the array                
             }
         );      
     }
