@@ -1,13 +1,9 @@
+const _ = require('lodash');
 const asyncWrapper=require('../middlewares/async')
-const User = require("../models/user.model");
-
 const {validator}= require('../validator/validator');
 const {createUserValidation,userIdInParams}= require('../validator/user.validation');
+const User = require("../models/user.model");
 
-const {getAccessToken}= require('./auth.controller')
-const _ = require('lodash');
-const RevokedToken = require('../models/revokedToken.model');
-const Tokens = require('../models/tokens.model');
 
 const getUsers=asyncWrapper(async (req, res) => {
     const users = await User.find();
@@ -32,7 +28,24 @@ const addUser=asyncWrapper( async  (req, res,next) => {
 
    await validator(createUserValidation)(req,res,next);
    
-    const user=new User(req.body);
+    
+   const fieldsToCreate = _.pickBy(req.body, (value) => value !== '');
+   const allowedFields = [
+     'username',
+     'password',
+     // 'role',
+     'name',
+     'position',
+     'phone',
+     'region',
+     'street',
+     'city',
+     'zipCode',
+     'noteAddress'
+   ];
+   const filteredFields = _.pick(fieldsToCreate, allowedFields);
+
+    const user=new User(filteredFields);
 
     const newUser = await user.save();
 
@@ -44,7 +57,8 @@ const updateUser= asyncWrapper(async (req, res,next) => {
 
 
     await validator(userIdInParams)(req,res,next);
-  
+    if(req.params.id != req.user.id)
+    return res.status(403).json({message:"only owner this account can edit data"})
    
     const user = await User.findById(req.params.id); 
   
@@ -52,7 +66,7 @@ const updateUser= asyncWrapper(async (req, res,next) => {
     const allowedFields = [
       'username',
       'password',
-      'role',
+      // 'role',
       'name',
       'position',
       'phone',
@@ -72,7 +86,6 @@ const updateUser= asyncWrapper(async (req, res,next) => {
       success: 1,
       message: "Data updated successfully.",
       data:updatedUser,
-      // accessToken:newAccessToken
     });
    
 });

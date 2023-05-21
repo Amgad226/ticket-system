@@ -1,6 +1,6 @@
 const ManagerConversation = require("../models/managerConversation.model");
 const Ticket= require('../models/ticket.model'); 
-const { conversation_id } = require("../validator/conversation.validation");
+const { conversation_id , message_body} = require("../validator/conversation.validation");
 const { validator } = require("../validator/validator");
 const asyncWrapper = require("./async");
 
@@ -38,6 +38,7 @@ const validationConversation=asyncWrapper(async (req,res,next)=>{
     req.conversation_id = (req.params.id )? req.params.id : req.body.conversation_id
     
     await validator(conversation_id)(req,res,next); 
+    await validator(message_body)(req,res,next); 
 
     next(); 
 });

@@ -25,8 +25,27 @@ const conversation_id= (req,res,next)=>{
         statusCode:code
     };
 }
+const message_body= (req,res,next)=>{
+  let errors = {};
+  let fail = false;
+  let code =400;
+
+  // let conversation_id = (req.params.id )? req.params.id : req.body.conversation_id
+  let message = req.body.message
+
+  if (message==null) {
+      addToErrors(errors,'message','message is required')
+      fail = true;
+    }
+    
+  return {
+      errors:errors,
+      fail:fail,
+      statusCode:code
+  };
+}
 function isValidId(id){
     const regex = /^[0-9a-fA-F]{24}$/; // Regular expression for ObjectId format
     return regex.test(id);
   }
-module.exports={conversation_id}
+module.exports={conversation_id,message_body}

@@ -10,9 +10,7 @@ const seed = require('./database/seeder/seed');
 const crypto = require('crypto');
 require('dotenv').config();
 const port = (process.env.PORT || 3000);
-const secret = process.env.CLIENT_SECRET_SOCKET_IO;
 
-// Generate hashed client secret
 
 
 var indexRouter = require("./routes/index");
@@ -42,19 +40,20 @@ app.use("/manager/conversations", managerConversationsRouter);
 
 app.use(RouteNotFound);
 
-// 
+/*---------------------------------------------------------------------------------------------------------------*/
 const server = http.createServer(app);
 
 const io =socket(server,{cors:"*"})
-const hashedSecret = crypto.createHash('sha256').update(secret).digest('hex');
+// Generate hashed client secret
+const hashedSecret = crypto.createHash('sha256').update(process.env.CLIENT_SECRET_SOCKET_IO).digest('hex');
 
 
 /**
  * These middleware functions ensure that clients connecting to the Socket.IO server authenticate themselves
- *  either by providing a matching hashed secret 
- * or a valid JWT token. 
+ * by providing a matching hashed secret and a valid JWT token. 
  * They help control access to the server and ensure that only authenticated and authorized clients are allowed to establish connections.
  */
+
 io.use((socket, next) => {
   const clientHashedSecret = socket.handshake.auth.hashedSecret;
 
@@ -67,7 +66,9 @@ io.use((socket, next) => {
 
 io.use(async (socket, next) => {
 
-  const token = socket.handshake.auth.token;
+  const authHeader = socket.handshake.auth.token;
+  
+  const token = authHeader&& authHeader.split(' ')[1]
   if (token) {
       const result  = await check(token);
       if(result.success==false ) return next(new Error(result.message));
@@ -87,6 +88,8 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('user-id','user-disconnect', 'user disconnect');
   });
 });
+
+/*---------------------------------------------------------------------------------------------------------------*/
 
 async function start (){
   await connectDB();

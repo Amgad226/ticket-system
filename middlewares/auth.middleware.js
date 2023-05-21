@@ -5,12 +5,14 @@ const User = require("../models/user.model");
 
 function getTokenFromHeader(authorization){
   const authHeader = authorization;
+  
   const accessToken = authHeader&& authHeader.split(' ')[1]
   return accessToken
 }
+
 async function check(token){
 
-const accessToken= getTokenFromHeader(token)
+const accessToken= token
 
   try {
       
@@ -39,7 +41,7 @@ const accessToken= getTokenFromHeader(token)
   } catch (err) {
     return {
       success:false ,
-      message:'Invalid Access Token , accessToken was expired',
+      message:'Invalid Access Token , accessToken was expired'+err.message,
       msg:err.message,
       status:401
     }
@@ -53,6 +55,8 @@ async function verifyToken(req, res, next) {
     // get token 
                                         // req.header('token')
     const accessToken=getTokenFromHeader( req.header("authorization"));
+
+
     if (!accessToken) {
       return res.status(401).json({ message: "No token, authorization denied" });
     }
