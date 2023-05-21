@@ -1,15 +1,29 @@
-const socket = io('127.0.0.1:3000', {  reconnectionAttempts: 3 /* Try to reconnect up to 3 times*/});
+const crypto = require('crypto');
+
+const clientSecret = 'your-client-secret';
+
+// Generate hashed client secret
+const hashedSecret = crypto.createHash('sha256').update(clientSecret).digest('hex');
+
+const socket = io('127.0.0.1:3000', {
+    reconnectionAttempts: 3, /* Try to reconnect up to 3 times*/
+    auth: {
+      hashedSecret: hashedSecret,
+      // token:"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyUGF5bG9hZCI6eyJpZCI6IjExMTExMTExMTExMTExMTExMTExMTExMSJ9LCJpYXQiOjE2ODQ2NjY5NjIsImV4cCI6MTY4NDc1MzM2Mn0.OIxtOEWGd0vCj6markjZZ5lwNeXNk5fByEGiKU9QGKs"
+      token:"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyUGF5bG9hZCI6eyJpZCI6IjExMTExMTExMTExMTExMTExMTExMTExMSJ9LCJpYXQiOjE2ODQ2NjY5NjIsImV4cCI6MTY4NDc1MzM2Mn0.OIxtOEWGd0vCj6markjZZ5lwNeXNk5fByEGiKU9QGKs"
+    },
+  });
 
   socket.on('connect_error', (error) => {
-    alert('Error connection with server try again after play server on port 3000 ,we will try connect 3 times  ');
-
+    // alert('Error connection with server try again after play server on port 3000 ,we will try connect 3 times  ');
+    alert("Error check the console")
     console.log('Connection error:', error.message);
   
     // Change the URL to a different address
-    socket.io.uri = '192.168.1.37:3000';
+    // socket.io.uri = '192.168.1.37:3000';
   
     // Attempt to reconnect
-    socket.connect();
+    // socket.connect();
   });
   
 socket.on('connect_timeout', timeout => {

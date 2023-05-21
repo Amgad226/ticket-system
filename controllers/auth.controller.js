@@ -143,7 +143,13 @@ function getRefreshToken(userPayload){
 }
 
 
-
+function decodeToken(token){
+    jwt.verify(refreshToken, process.env.JWT_ACCESS_TOKEN_SECRET, (err, user) => {
+        if (err) {
+          return res.status(403).json({ message: 'Invalid refresh token' });
+        }
+    });
+}
 module.exports={
     login,
     token,
@@ -151,4 +157,5 @@ module.exports={
     logout,
     getAccessTokenFromRefresh,
     getAccessToken,
+    decodeToken
 }
