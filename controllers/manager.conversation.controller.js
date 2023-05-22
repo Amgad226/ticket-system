@@ -156,7 +156,7 @@ const storeConversationMessage = asyncWrapper(async (req, res) => {
         console.log(unReadMessage ,manager_id_in_participants);
 
         if(unReadMessage> MAXIMUM_MESSAGES){
-            return res.json({message:`you cant send more than ${MAXIMUM_MESSAGES} without admin read`})
+            return res.json({message:`you cant send more than ${MAXIMUM_MESSAGES} without manager read`})
         }
     }
 

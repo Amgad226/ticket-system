@@ -93,9 +93,7 @@
         padding: 10px 20px;
 
     }
-    body{
-        /* background-color: rgb(212, 234, 255); */
-    }
+
 
     .Ticket {
         background-color: rgb(255, 241, 241);
@@ -170,7 +168,7 @@
                 reconnectionAttempts: 3, /* Try to reconnect up to 3 times*/
                 auth: {
                   hashedSecret: hashedSecret,
-                  token:"Bearer eyJhbGciO0.OIxtOEWGd0vCj6markjZZ5lwNeXNk5fByEGiKU9QGKs"
+                  token:"Bearer eyJhbGciO0.OIxtOEWGd0vCj6mZ5lwNeXNk5fByEGiKU9Ks"
                 },
               });
             </pre>
@@ -212,7 +210,7 @@
  
 
             <li class="">
-                <span class="route-title section-title">User routes and Middlewares</span>
+                <span class="route-title section-title">User routes and Middleware</span>
             </li>
 
             <li class="border">
@@ -444,7 +442,7 @@
 
     <ul class="tech all">
         <li>
-            <span class="route-title section-title">Technician Middlewares</span>
+            <span class="route-title section-title">Technician routes and middleware</span>
         </li>
         <li class="border">
             <span class="route-title"> Get all technicians <span class="route">GET /technicians</span> </span>
@@ -473,7 +471,7 @@
         </li>
     
         <li class="border">
-            <span class="route-title">Get all tickets assigned to technicint logged in </span> <span class="route">GET
+            <span class="route-title">Get all tickets assigned to technician logged in </span> <span class="route">GET
                 /technicians/getTickets</span>
             <div class="route-description">Only technician can perform this action.</div>
         </li>
@@ -506,7 +504,7 @@
     
     <ul class="admin-conversation all">
         <li>
-            <span class="route-title section-title">Admin conversation Middlewares</span>
+            <span class="route-title section-title">Admin-conversation routes and middleware</span>
         </li>
         <li class="border">
             <span class="route-title">Get all conversations <span class="route">GET: /admin/conversations</span></span>
