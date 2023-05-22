@@ -70,7 +70,7 @@ io.use(async (socket, next) => {
   const authHeader = socket.handshake.auth.token;
   
   const token = authHeader&& authHeader.split(' ')[1]
-  console.log(token);
+  // console.log(token);
   if (token) {
       const result  = await check(token);
       if(result.success==false ) return next(new Error(result.message));

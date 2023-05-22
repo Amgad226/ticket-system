@@ -2,12 +2,10 @@
   "name": "support-sys",
   "version": "0.0.0",
   "private": true,
-  "main": "./bin/www.js",
+  "main": "./app.js",
   "scripts": {
-    "start": "node ./bin/www.js",
-    "a": "node a.js",
-    "dev": "nodemon ./bin/www.js",
-    "devA": "nodemon app.js"
+    "start": "node ./app.js",
+    "dev": "nodemon ./app.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
