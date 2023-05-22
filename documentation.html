@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>documentation</title>
+</head>
+<style>
+    pre{
+        /* width: 100%; */
+	/* padding: 0; */
+	/* margin: 0; */
+	/* overflow: auto; */
+	/* overflow-y: hidden; */
+	font-size: 15px;
+	/* line-height: 20px; */
+	background: #efefef;
+	/* border: 1px solid #777; */
+    }
+    ul {
+        padding: 0;
+        list-style: none;
+    }
+
+    li::before{
+        content: '';
+    }
+    li {
+        margin-bottom: 5px;
+    }
+    .border{
+        padding:20px 0px ;
+        /* border: #000 solid 2px; */
+
+    }
+
+    .title{
+        font-weight: bold;
+        font-size: 25px;
+        margin-bottom: 5px;
+    }
+    .route-title {
+        font-weight: bold;
+        font-size: 25px;
+        margin-bottom: 5px;
+    }
+    .section-title{
+        margin-bottom: 14440px;
+        color: #ff0000;
+        font-size: 30px;
+        background-color: #ffffff;
+        border: #000 solid 1px;
+        padding: 0px 20px ;
+
+    }
+
+    .route-description {
+
+        /* font-style: italic; */
+        color: #ff0000;
+        font-size: 20px;
+        display: block;
+    }
+    .controller-description{
+        color: #000000;
+
+        font-size: 20px;
+        display: block;
+
+    }
+    .model-description{
+        list-style-type: none;
+
+        font-size: 20px;
+        display: block; 
+    }
+   
+
+    .route::before {
+        content: "";
+    }
+
+    .route {
+        font-size: 18px;
+        background-color: rgb(187, 187, 187);
+        color: #000;
+    }
+
+    .all {
+
+        border: #000 solid 2px;
+        padding: 10px 20px;
+
+    }
+    body{
+        /* background-color: rgb(212, 234, 255); */
+    }
+
+    .Ticket {
+        background-color: rgb(255, 241, 241);
+
+    }
+
+    .tech {
+        background-color: rgb(255, 255, 248);
+
+    }
+
+    .user {
+        background-color: rgb(249, 254, 255);
+    }
+
+    .auth {
+        background-color: rgb(245, 243, 253);
+
+    }
+
+    .events-observer {
+        background-color: rgb(255, 246, 255);
+    }
+
+    .admin-conversation {
+        background-color: rgb(253, 244, 254);
+
+    }
+
+    .manager-conversation {
+        background-color: rgb(239, 242, 248);
+    }
+    .model{
+    background-color: rgb(224, 250, 221);
+    margin-bottom: 20px;
+    }
+    .black{
+        color:black
+    }
+    .green{
+        color:green
+    }
+  
+    .client{
+        font-size: 25px;
+    }
+
+
+
+</style>
+<body>
+
+    <h1 style="margin-top: 30px;">APIs documentation</h1> 
+    
+    <hr>
+    <div class="client all">
+        <h3>for client </h3>
+        <div> When I am in the conversation and I get a new message via the socket it is necessary for the front end developer to send an event on the socket name (read_message)  with  message_id value to make this message readable in the databases  </div>  
+        <br>
+        <div> when front end need to connect on socket server he should send hashed secret and jwt token </div>  
+        <div>
+            <pre>
+         const clientSecret = 'your-client-secret';  
+         
+            // Generate hashed client secret
+            const hashedSecret = crypto.createHash('sha256').update(clientSecret).digest('hex');
+        </pre>
+        </div>
+        <div>
+            <pre>
+            const socket = io('127.0.0.1:3000', {
+                reconnectionAttempts: 3, /* Try to reconnect up to 3 times*/
+                auth: {
+                  hashedSecret: hashedSecret,
+                  token:"Bearer eyJhbGciO0.OIxtOEWGd0vCj6markjZZ5lwNeXNk5fByEGiKU9QGKs"
+                },
+              });
+            </pre>
+        </div>
+
+        <div>
+            listening on user's events 
+        <pre>
+            const user_id= _id from login api 
+            socket.on('user-${user_id}',(data)=> {
+                data[0] is the event name (admin-message , manager-message)                      
+                data[1] is the value
+                {
+                    "customer": "8823",
+                  
+                    "conversation": "fc62",
+                  
+                    "body": "hi hi",
+                  
+                    "_id": "512",
+                  
+                    "createdAt": "2023-05-17T22:23:58.225Z"
+                }
+              }); 
+        </pre>
+        </div>
+    </div>
+    <hr>
+    <ul class="user all">
+
+        <ul class="model" >
+            <li class="model-title title green" >user model</li>
+            <li class="model-description black"  >name ,username ,password without hashing ,</li>
+            <li class="model-description black"  >role {user,tech,manager,admin}</li>
+            <li class="model-description black"  >isActive don't use </li>
+            <li class="model-description black"  >position,phone,region,street,city,zipCode and noteAddress</li>
+        </ul>
+        <ul class="">
+ 
+
+            <li class="">
+                <span class="route-title section-title">User routes and Middlewares</span>
+            </li>
+
+            <li class="border">
+
+                <span class="route-title"> Get all users <span class="route">GET /users</span> </span>
+                <div class="route-description">user must logged in </div>
+                <div class="route-description">Only user role can't perform this action..</div>
+                <div class="controller-description">in controller i send query to DB to get all users </div>
+            </li>
+
+            <li class="border">
+                <span class="route-title">Get single user by user_id</span> <span class="route">GET /users:/id</span>
+                <div class="route-description">user must logged in </div>
+                <div class="route-description">Only admin or managers or tech or user's have this id can perform this action</div>
+                <div class="controller-description">in controller i validate user_id_in_params then snd query to DB to get user by user_id in params</div>
+            </li>
+            <li class="border"> 
+                <span class="route-title">Create new user [and type role of this user manually]</span> <span class="route">POST/users</span>
+                <div class="route-description">user must logged in </div>
+                <div class="route-description"> Only admin can perform this action.. and use handleSendByFormData middleware to allow send data inside form data and handle any error regarding send data  </div>
+                <div class="controller-description">in controller after validate data get form client ,  then i get a copy from body and create new user </div>
+                <div class="controller-description"> I get a copy from body because If the user sends the name field with an empty value, I ignore it and consider that he did not send the field in the first place ||, and in order to use the fields that I want specifically, if the user sends additional field that I do not want it </div>
+            </li>
+        
+            <li class="border">
+                <span class="route-title">Edit user by user_id</span> </span> <span class="route">PATCH /users/:id</span>
+                <div class="route-description">user must logged in </div>
+                <div class="route-description">user's have this user_id can perform this action..</div>
+            </li>
+        
+            <li class="border">
+                <span class="route-title">Delete user by user_id</span> </span> <span class="route">DELETE /users/:id</span>
+                <div class="route-description">ALl can perform this action...</div>
+            </li>
+        
+        </ul>
+    
+
+    <ul class="auth ">
+
+        <ul class="model" >
+            <li class="model-title title green" >revokedToken model</li>
+            <li class="model-description black"  >when we logout any user,to Block his token and not use it anymore we store this token in this model </li>
+            <li class="model-description black"  >token</li>
+            <li class="model-description black"  >createdAt: expires: '30d' // automatically remove expired entries after 30 days</li>
+            
+        </ul>
+        <ul class="">
+
+        <li class="">
+            <span class="route-title section-title ">auth routes and Middleware</span>
+        </li>
+        <li class="border">
+    
+            <span class="route-title"> Get token <span class="route">POST /users/token</span> </span>
+            <div class="route-description">All roles can perform this action.. </div>
+            <div class="controller-description">send email and pass to get new access token (this route for test and get token quickly ) </div>
+
+        </li>
+        <li class="border">
+            <span class="route-title">Login, get profile info and tokens</span> <span class="route">POST /users/login</span>
+            <div class="route-description">All roles can perform this action..</div>
+            <div class="controller-description">send email and pass to get new access-token , refresh-token and user info   </div>
+
+        </li>
+        <li class="border">
+            <span class="route-title">Get new access token by send refresh-token</span> <span class="route">POST/users/refresh-token</span>
+            <div class="route-description">All roles can perform this action.. </div>
+            <div class="controller-description">when access token expire, to get a new access token we send our refresh-token to this route and check if refresh-token valid we send new access-token and refresh-token</div>
+
+        </li>
+    
+        <li class="border">
+            <span class="route-title">logout and revoke token</span> <span class="route">POST /users/logout</span>
+            <div class="route-description">All roles can perform this action.. </div>
+            <div class="route-description">user must logged in </div>
+            <div class="controller-description">we store  access token in <span style="color:green">revokedToken model</span> to revoke it </div>
+
+        </li>
+    
+    
+    </ul>
+    
+    </ul>
+    </ul>
+    
+
+
+
+
+    <hr>
+    <ul class=" Ticket all ">
+        <ul class="model" >
+            <li class="model-title title green" >Ticket model</li>
+            <li class="model-description black"  >customer : The user_id to user create this ticket</li>
+            <li class="model-description black"  >manager : The user id of the manager that accept this ticket and refer it to technician</li>
+            <li class="model-description black"  >technician : The user ID of the technician referenced on this ticket</li>
+            <li class="model-description black"  >imagePath (i store string and i don't store image  )</li>
+            <li class="model-description black"  >description  </li>
+            <li class="model-description black"  >priority </li>
+            <li class="model-description black"  >status  : change from open to in progress when manager give ticket to any technician</li>
+        </ul>
+        <ul class="">
+ 
+               <li>
+                   <span class="route-title section-title">Ticket routes and Middleware</span>
+               </li>
+               <li class="border">
+                   <span class="route-title">Get all tickets <span class="route">GET: /tickets</span></span>
+                    <div class="route-description">user must logged in </div>
+                   <div class="route-description">Only admin or manager can access this route.</div>
+               </li>
+           
+               <li class="border">
+                   <span class="route-title"> Get unassigned tickets for technician <span class="route">GET:/tickets/unassigned</span></span>
+                   <div class="route-description">user must logged in </div>
+                   <div class="route-description">Only admin or manager can access this route.</div>
+                <div class="controller-description">get all tickets whose status is open and not assigned to the technician </div>
+
+               </li>
+           
+               <li class="border">
+                   <span class="route-title">Get single ticket by ID <span class="route">GET: /tickets/:id</span></span>
+                   <div class="route-description">user must logged in </div>
+                   <div class="route-description">only admin,manager, technician, or ticket's owner  can access this route .</div>
+                   <div class="controller-description">in controller i validate ticket_id in params then send query to DB to get ticket by ticket_id in params</div>
+
+               </li>
+               <li class="border">
+                   <span class="route-title">Create new ticket <span class="route">POST: /tickets</span></span>
+                   <div class="route-description">user must logged in </div>
+                   <div class="route-description"> only user can access this route .</div>
+                   <div class="controller-description">in controller after create ticket i create inactive manager-conversation to this ticket and put the user create the ticket in participants for this manager-conversation </div>
+
+               </li>
+               <li class="border">
+                   <span class="route-title">Edit technician and priority for ticket <span class="route">PATCH:/tickets/:id</span></span>
+                   <div class="route-description">user must logged in </div>
+                   <div class="route-description">Only managers can perform this action.</div>
+                   <div class="controller-description">after validation ticketIdInParams , i edit priority for this ticket</div>
+
+               </li>
+               <li class="border">
+                   <span class="route-title">Delete ticket by ID <span class="route">DELETE: /tickets/:id</span></span>
+                   <div class="route-description">user must logged in </div>
+                   <div class="route-description">Only managers can perform this action.</div>
+                   <div class="controller-description">after validation ticketIdInParams ,i delete ticket </div>
+
+               </li>
+               <li class="border">
+                   <span class="route-title">Give ticket to Technician <span class="route">POST: /giveToTheTechnician/:id</span></span>
+                   <div class="route-description">user must logged in </div>
+                   <div class="route-description">Only managers can perform this action.</div>
+                   <div class="controller-description">Give ticket to Technician and convert status to "In Progress" and add priority and get manager-conversation to activate it and add manager to participants of conversation </div>
+               </li>
+           </ul>
+        </ul>
+
+    <hr>
+    
+    <ul class="manager-conversation all">
+        <ul class="model" >
+            <li class="model-title title green" >manager-conversation model</li>
+            <li class="model-description black"  >ticket: the ticket_id that conversation created for it</li>
+            <li class="model-description black"  >last_message_id : last message id to get body of message when get all conversations  {_id ,conversation name , ticket_id , last message body}</li>
+            <li class="model-description black"  >createdAt </li>
+            <li class="model-description black"  >active: default false after the manager assign ticket to technician change to true</li>
+            <li class="model-description black"  >participants  </li>
+        </ul>
+
+        <li>
+            <span class="route-title section-title">Manager-conversation  routes and Middleware</span>
+            <li class="border">
+                <span class="route-title">Get all manager-conversations <span class="route">GET: /manager/conversations<i >?page=1</i></span></span>
+                <div class="route-description">user must logged in </div>
+                <div class="route-description">Only managers and user can perform this action.</div>
+                <div class="controller-description"> 
+                    <div > The getConversations Controller returns a paginated list of conversations. </div>
+                    <div > Pagination is supported using the page parameter, which specifies the desired page number (default: 1). </div>
+                    <div > The tickets query is based on the user's role, retrieving either the manager's responsible tickets or the user's tickets. </div>
+                    <div > The total count of active manager-conversations is obtained for the tickets, which determines the total number of pages for pagination. </div>
+                    <div > The conversations query then retrieves the conversations associated with the ticket IDs and filters them by active status. </div>
+                    <div > The retrieved conversations are processed and looped to add the conversation's name and lastMessage properties. </div>
+                    <div > The response: </div>
+                    <div > is an array of conversations, where each conversation object includes its name and the text of the last message. </div>
+                    <div > currentPage field indicates the current page number. </div>
+                    <div > totalPages field indicates the total number of available pages. </div>
+                </div>
+            </li>
+
+            <li class="border">
+                <span class="route-title">Get  manager-conversation <span class="route">GET: /manager/conversations/:id</span></span>
+                <div class="route-description">user must logged in </div>
+                <div class="route-description">Only managers and user can perform this action.</div>
+                <div class="controller-description"> i get the conversation by conversation_id and append conversation name and last message then return it . </div>
+            </li>
+
+            <li class="border">
+                <span class="route-title">DELETE manager-conversation <span class="route">DELETE: /manager/conversations/:id</span></span>
+                <div class="route-description">user must logged in </div>
+                <div class="route-description">Only managers can perform this action.</div>
+            </li>
+
+            <li class="border">
+                <span class="route-title">send message to manager-conversation <span class="route">POST: /manager/conversations/message</span></span>
+                <div class="route-description">user must logged in </div>
+                <div class="route-description">Only managers and user can perform this action.</div>
+                <div class="controller-description"> 
+                    <div >   i get the conversation by conversation_id in body  </div>
+                    <div >   then if the sender is user we check if the user send 5 messages without the manager read it , we will ignore send the message </div>
+                    <div >   then we will store this message in database </div>
+                    <div >   then we will create two recipient for this message read recipient for sender and unread recipient for receiver   </div>
+                    <div >   then we will update the last_message_id field in conversation with this new message id </div>
+                    <div >   then we will send event to receiver using socket  </div>
+                </div>
+
+            </li>
+
+            <li class="border">
+                <span class="route-title">Get messages in manager-conversation <span class="route">GET: /manager/conversations/:id/messages</span></span>
+                <div class="route-description">user must logged in </div>
+                <div class="route-description">Only managers or user can perform this action.</div>
+                <div class="controller-description">we will make all recipient message id read then will return all messages in conversation </div>
+            </li>
+    
+    </ul>
+    
+    <hr>
+
+    <ul class="tech all">
+        <li>
+            <span class="route-title section-title">Technician Middlewares</span>
+        </li>
+        <li class="border">
+            <span class="route-title"> Get all technicians <span class="route">GET /technicians</span> </span>
+            <div class="route-description">Only admin or managers can perform this action..</div>
+        </li>
+        <li class="border">
+            <span class="route-title">Get single technician by technician_id</span> <span class="route">GET
+                /technicians:/id</span>
+            <div class="route-description">Only admin or managers or technician's have this id can perform this action.
+            </div>
+        </li>
+        <li class="border">
+            <span class="route-title">Create new technician</span> <span class="route">POST /technicians</span>
+            <div class="route-description">Only admin or managers can perform this action..</div>
+        </li>
+    
+        <li class="border">
+            <span class="route-title">Delete technician by technician_id</span> </span> <span class="route">DELETE
+                /technicians/:id</span>
+            <div class="route-description">Only admin and managers can perform this action.</div>
+        </li>
+        <li class="border">
+            <span class="route-title">Search for technicians by name</span> <span class="route">POST
+                /technicians/search</span>
+            <div class="route-description">Only admin and managers can perform this action.</div>
+        </li>
+    
+        <li class="border">
+            <span class="route-title">Get all tickets assigned to technicint logged in </span> <span class="route">GET
+                /technicians/getTickets</span>
+            <div class="route-description">Only technician can perform this action.</div>
+        </li>
+    </ul>
+    
+
+    <hr>
+    <ul class="events-observer all">
+        <li>
+            <span class="route-title section-title">Events Observer</span>
+        </li>
+        <li class="border">
+            <span class="route-title">Get events observer page <span class="route">GET: /</span></span>
+            <div class="route-description">All</div>
+        </li>
+        <li class="border">
+            <span class="route-title">Send event to socket to test events observer page <span class="route">GET:
+                    /send-test-event</span></span>
+            <div class="route-description">All</div>
+        </li>
+    
+    
+    </ul>
+    
+    <hr>
+    
+    
+    
+    
+    
+    <ul class="admin-conversation all">
+        <li>
+            <span class="route-title section-title">Admin conversation Middlewares</span>
+        </li>
+        <li class="border">
+            <span class="route-title">Get all conversations <span class="route">GET: /admin/conversations</span></span>
+            <div class="route-description">Only admin .</div>
+        </li>
+    
+        <li class="border">
+            <span class="route-title">Get single conversation info by conversation_ID <span class="route">GET:
+                    /admin/conversations/:id</span></span>
+            <div class="route-description">admin or user owner can perform this action. .</div>
+        </li>
+        <li class="border">
+            <span class="route-title">Create new conversation <span class="route">POST: /admin/conversations</span></span>
+            <div class="route-description">Only user can perform this action. </div>
+        </li>
+    
+        <li class="border">
+            <span class="route-title">Delete conversation by ID <span class="route">DELETE:
+                    /admin/conversations/:id</span></span>
+            <div class="route-description">Only Admin.</div>
+        </li>
+    
+        <li class="border">
+            <span class="route-title">Send message to conversation <span class="route">POST:
+                    /admin/conversations/message</span></span>
+            <div class="route-description">admin or user owner can perform this action.</div>
+        </li>
+    
+        <li class="border">
+            <span class="route-title">get conversation messages <span class="route">GET:
+                    /admin/conversations/:id/messages</span></span>
+            <div class="route-description">admin or user owner can perform this action.</div>
+        </li>
+    </ul>
+    
+  
+    
+
+</body>
+</html>

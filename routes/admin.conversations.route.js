@@ -11,6 +11,7 @@ const {isAdmin,isUser}=require('../middlewares/roles.middlewre');
 const {isAdminOrUserOwner,validationConversation,findConversation}=require('../middlewares/admin.conversation.middleware');
 
 
+
 // GET all conversations
 router.get("/", [verifyToken, isAdmin ],  getConversations);
 
@@ -29,7 +30,6 @@ router.post("/message", [handleSendByFormData,verifyToken ,validationConversatio
 
 // GET a messages of  manager_conversation by ID
 router.get("/:id/messages", [verifyToken,validationConversation,findConversation,isAdminOrUserOwner], getConversationMessages);
-
 
 
 module.exports=router;

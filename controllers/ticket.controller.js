@@ -46,7 +46,7 @@ const createTicket =asyncWrapper( async (req, res) => {
     fieldsToCreate.customer=req.user.id
     const ticket = new Ticket(fieldsToCreate);
 
-    //  await ManagerConversation.create({ticket:ticket.id,})
+    //  await ManagerConversation.create({ticket:ticket.id,});
      const managerConversation=new ManagerConversation({ticket:ticket.id,participants:[{id:req.user.id ,role:req.user.role}]});
      const newManagerConversation= await managerConversation.save();
 
@@ -67,7 +67,7 @@ const updateTicket= asyncWrapper( async (req, res,next) => {
     //   'customer',
     //   'imagePath',
     //   'description',
-      'technician',
+    //   'technician',
       'priority',
     //   'status',
     ];

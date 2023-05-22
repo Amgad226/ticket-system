@@ -1,16 +1,18 @@
-const crypto = require('crypto');
+// const crypto = require('crypto');
+// // Generate hashed client secret
+// const hashedSecret = crypto.createHash('sha256').update(clientSecret).digest('hex');
 
 const clientSecret = 'your-client-secret';
+const hashedSecret="9281a066c4c7869a495e66005d6a578fad02392401edf0be19e3896cabc2b133"
 
-// Generate hashed client secret
-const hashedSecret = crypto.createHash('sha256').update(clientSecret).digest('hex');
+const accessToken ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyUGF5bG9hZCI6eyJpZCI6IjExMTExMTExMTExMTExMTExMTExMTExMSJ9LCJpYXQiOjE2ODQ3NjU0MzcsImV4cCI6MjExNjc2NTQzN30.jI1hsK9EQqpQ9WEoZawsSy6SYAoTwfxntIzobgGpqoQ"
+const authToken=`Bearer ${accessToken}`
 
 const socket = io('127.0.0.1:3000', {
     reconnectionAttempts: 3, /* Try to reconnect up to 3 times*/
     auth: {
       hashedSecret: hashedSecret,
-      // token:"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyUGF5bG9hZCI6eyJpZCI6IjExMTExMTExMTExMTExMTExMTExMTExMSJ9LCJpYXQiOjE2ODQ2NjY5NjIsImV4cCI6MTY4NDc1MzM2Mn0.OIxtOEWGd0vCj6markjZZ5lwNeXNk5fByEGiKU9QGKs"
-      token:"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyUGF5bG9hZCI6eyJpZCI6IjExMTExMTExMTExMTExMTExMTExMTExMSJ9LCJpYXQiOjE2ODQ2NjY5NjIsImV4cCI6MTY4NDc1MzM2Mn0.OIxtOEWGd0vCj6markjZZ5lwNeXNk5fByEGiKU9QGKs"
+      token:authToken
     },
   });
 

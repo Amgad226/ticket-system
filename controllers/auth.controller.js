@@ -2,7 +2,7 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
 const RevokedToken = require('../models/revokedToken.model');
-const Tokens = require("../models/tokens.model");
+// const Tokens = require("../models/tokens.model");
 
 
 const login =async (req, res) => {
@@ -128,7 +128,7 @@ function getAccessToken(userPayload){
 
     var secretAccessKey=process.env.JWT_ACCESS_TOKEN_SECRET
     // var expiresAccessIn=process.env.ACCESS_TOKEN_EXPIRES_IN
-    var expiresAccessIn=60*60*24
+    var expiresAccessIn=60*60*24*5000
     console.log(expiresAccessIn);
 
     return jwt.sign({userPayload}, secretAccessKey, { expiresIn:expiresAccessIn });

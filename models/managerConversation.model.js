@@ -29,7 +29,7 @@ const managerConversationSchema = new mongoose.Schema({
 , { toJSON: { virtuals: true } });
 
 managerConversationSchema.virtual('last_message', {
-  ref: 'ManagerMessage',
+  ref: 'message',
   localField: 'last_message_id',
   foreignField: '_id',
   justOne: true,

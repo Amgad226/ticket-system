@@ -5,7 +5,7 @@ const { verifyToken} = require("../middlewares/auth.middleware");
 const {handleSendByFormData}=require('../middlewares/form-data.middleware')
 
 
-const {isNotUser,isUserOwnerOrAbove}=require('../middlewares/roles.middlewre');
+const {isNotUser,isUserOwnerOrAbove, isAdmin}=require('../middlewares/roles.middlewre');
 
 router.get("/whoIsMe", [verifyToken] , whoIsMe);
 
@@ -16,7 +16,7 @@ router.get("/",[ verifyToken,isNotUser ], getUsers);
 router.get("/:id", [ verifyToken,isUserOwnerOrAbove],getUser);
 
 // Create a new user
-router.post("/",[ handleSendByFormData,verifyToken ] ,addUser );
+router.post("/",[ handleSendByFormData,verifyToken ,isAdmin ] ,addUser );
 
 // handle if send PATCH request on users without id in url
 router.patch('/', (req, res) => {  return res.status(400).json({ message: 'You must provide an ID in the URL.' });});

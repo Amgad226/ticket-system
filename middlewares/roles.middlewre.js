@@ -38,6 +38,8 @@ const isManagerOrUser = async (req,res,next)=>{
    : res.status(403).json({message:"only manager | user"});
 
 }
+
+
 const ManagerOwnerTheChat = async (req,res,next)=>{
   (req.user.role == "manager" /* && manager is owner the chat */  )
    ? next() 
@@ -53,6 +55,7 @@ const isAdminOrManager = async (req,res,next)=>{
 }
 
 const isUserAndNotTicketOwner = async (req,res,next)=>{
+  // only admin,manager, technician, or ticket's owner  can access this route 
   if(req.user.role == "user" )
   {
     var ticket_id =req.params.id; 
@@ -61,6 +64,7 @@ const isUserAndNotTicketOwner = async (req,res,next)=>{
         return res.status(403).json({message: "its not your ticker"})
     }
   }
+
   return next(); 
 
 

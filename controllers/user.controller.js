@@ -33,7 +33,7 @@ const addUser=asyncWrapper( async  (req, res,next) => {
    const allowedFields = [
      'username',
      'password',
-     // 'role',
+     'role',
      'name',
      'position',
      'phone',

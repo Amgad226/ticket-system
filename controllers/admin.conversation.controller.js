@@ -1,15 +1,14 @@
 const asyncWrapper=require('../middlewares/async')
 const User = require("../models/user.model");
-const AdminMessage =require('../models/adminMessage.model')
+const Message =require('../models/message.model')
 const AdminConversation =require('../models/adminConversation.model')
-const {validator}= require('../validator/validator');
-const {}= require('../validator/user.validation');
 const {findOrCreate }=require('../database/query')
 const _ = require('lodash');
+const Recipient = require('../models/recipient.model');
+const ADMIN_ID="111111111111111111111111"
+const MAXIMUM_MESSAGES = process.env.MAXIMUM_MESSAGES
 
 const getConversations = asyncWrapper(async (req, res) => {
-
-
 
     const page = parseInt(req.query.page) || 1; // Get the page number from the query parameters, default to 1 if not provided
     const limit = 10; // 
@@ -26,7 +25,7 @@ const getConversations = asyncWrapper(async (req, res) => {
         conversations,
         currentPage: page,
         totalPages});
-    return res.json(conversations)
+    // return res.json(conversations)
 });
 
 const getConversation = asyncWrapper(async (req, res) => {
@@ -39,12 +38,16 @@ const getConversation = asyncWrapper(async (req, res) => {
 
 const getConversationMessages = asyncWrapper(async (req, res) => {
 
-    var messages = await AdminMessage.find({conversation:req.params.id});
+    var messages = await Message.find({conversation:req.params.id});
+    await Recipient.updateMany(
+        { conversation: req.params.id,   customer: req.user.id, read_at:null },
+        { $set: { read_at: Date.now() } }
+      );
 
-    return res.json(messages)
-
-
+      return res.json(messages)
 });
+
+
 
 async function nameById(id){
     return await User.findById(id,{username:1})
@@ -58,24 +61,32 @@ const storeConversationMessage = asyncWrapper(async (req, res) => {
     else{
        var {username,_id}=( await User.findOne({role:"admin"},{username:1}));
     }
- 
+    const conversation_id=req.body.conversation_id
+    const auth_id= req.user.id;
     var payload= {
-        customer:req.user.id,
-        conversation:req.body.conversation_id,
+        customer:auth_id,
+        conversation:conversation_id, 
         body:req.body.message,
     }
-    var document =await AdminMessage.create(payload);
-    console.log(document);
+
+    const unReadMessage= await Recipient.find({conversation:conversation_id,   customer:ADMIN_ID ,read_at:null}).countDocuments()
+    if(unReadMessage> MAXIMUM_MESSAGES){
+        return res.json({message:`you cant send more than ${MAXIMUM_MESSAGES} without admin read`})
+    }
+    var document =await Message.create(payload);
+
+    Recipient.create({conversation:conversation_id, message:document.id, customer:auth_id ,read_at:Date.now()});
+    Recipient.create({conversation:conversation_id, message:document.id, customer: ADMIN_ID });
+
     const documentObj = document.toObject();
     documentObj.sender=req.user.name;
     delete documentObj.__v
 
-    req.io.emit(`user-${_id} ${username}`,`admin-message`,documentObj);    
+    req.io.emit(`user-${_id}`,`admin-message`,documentObj);    
 
     return res.status(201).json({
         message:"messages sended",
         document:documentObj
-
     })
 })
 

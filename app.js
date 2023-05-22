@@ -21,6 +21,7 @@ var techniciansRouter = require("./routes/technicians.route");
 var adminConversationsRouter =require("./routes/admin.conversations.route");
 var managerConversationsRouter =require("./routes/manager.conversations.route");
 const { check } = require('./middlewares/auth.middleware');
+const Recipient = require('./models/recipient.model');
 var app = express();
 
 app.use((req,res,next)=>{req.io=io;next();})
@@ -69,6 +70,7 @@ io.use(async (socket, next) => {
   const authHeader = socket.handshake.auth.token;
   
   const token = authHeader&& authHeader.split(' ')[1]
+  console.log(token);
   if (token) {
       const result  = await check(token);
       if(result.success==false ) return next(new Error(result.message));
@@ -87,6 +89,16 @@ io.on('connection', (socket) => {
     console.log('disconnect');
     socket.broadcast.emit('user-id','user-disconnect', 'user disconnect');
   });
+
+/**
+ * when client open the chat and listen on new message and append it ,he must send event on socket server on read_message
+ * with message_id for make this message read and if don't do it the client cant send message to admin because 
+ * client cant send more than process.env.MAXIMUM_MESSAGES messages without admin read 
+ */
+  socket.on('read_message', message_id => {
+    Recipient.findOneAndUpdate({message:message_id},{read_at:Data.now()});
+});
+
 });
 
 /*---------------------------------------------------------------------------------------------------------------*/

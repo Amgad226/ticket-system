@@ -16,7 +16,7 @@ router.get("/:id", [verifyToken,validationConversation,findConversation,isManage
 // router.get("/:id", validationConversation);
 
 /**
- * create manager_conversation created automatic when assign ticket to technician 
+ * create manager_conversation created automatic when manager assign ticket to technician 
 */
 
 // Delete a conversation by ID
