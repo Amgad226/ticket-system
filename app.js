@@ -10,8 +10,7 @@ const seed = require('./database/seeder/seed');
 const crypto = require('crypto');
 require('dotenv').config();
 const port = (process.env.PORT || 3000);
-
-
+const cors = require('cors');
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users.route");
@@ -24,6 +23,7 @@ const { check } = require('./middlewares/auth.middleware');
 const Recipient = require('./models/recipient.model');
 var app = express();
 
+app.use(cors('*'));
 app.use((req,res,next)=>{req.io=io;next();})
 
 app.use(logger("dev"));
