@@ -8,6 +8,8 @@ const {ticketIdInParams}= require('../validator/ticket.validation');
 
 const _ = require('lodash');
 const ManagerConversation = require('../models/managerConversation.model');
+const Message = require('../models/message.model');
+const { conversation_id } = require('../validator/conversation.validation');
 
 
 const getTickets= asyncWrapper(async (req, res) => {
@@ -120,6 +122,26 @@ const giveToTheTechnician =  asyncWrapper( async (req, res,next) => {
         message:`The ticket was given to the technician, ${technician.name} and the conversation is active `
     })
 });
+const closeTicket =  asyncWrapper( async (req, res,next) => {
+
+    const ticketId = req.params.id ;
+    const ticket = await Ticket.findById(ticketId);
+    if(ticket.status=='Closed') return res.status(200).json({message:"already closed"})
+    // if(ticket.status=='Open') return res.status(400).json({message:"this ticket still Open"})
+    ticket.status="Closed";
+    await ticket.save();
+    const conversation = await ManagerConversation.findOne({ ticket: ticketId },{_id:1});
+ 
+    await Message.deleteMany({ conversation: conversation._id });
+    await ManagerConversation.findByIdAndDelete(conversation._id);
+
+    return res.json({
+        message:"close ticket and delete conversation successfully "
+    })
+
+});
+
+
 
 
 
@@ -131,4 +153,5 @@ module.exports={
     deleteTicket,
     giveToTheTechnician,
     getUnassignedTickets,
+    closeTicket
 }

@@ -366,6 +366,15 @@
                    <div class="route-description">Only managers can perform this action.</div>
                    <div class="controller-description">Give ticket to Technician and convert status to "In Progress" and add priority and get manager-conversation to activate it and add manager to participants of conversation </div>
                </li>
+
+               <li class="border">
+                <span class="route-title">Close ticket by ID <span class="route">GET: /tickets/close/:id</span></span>
+                <div class="route-description">user must logged in </div>
+                <div class="route-description">validation  </div>
+                <div class="route-description">only admin,manager responsible on this ticket can access this route .</div>
+                <div class="controller-description">in controller change ticket status to close and delete ticket conversation and his messages </div>
+
+            </li>
            </ul>
         </ul>
 

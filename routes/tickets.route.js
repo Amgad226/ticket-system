@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const {getTickets ,getTicket , createTicket ,updateTicket ,deleteTicket ,giveToTheTechnician,getUnassignedTickets}=require('../controllers/ticket.controller');
+const {getTickets ,getTicket , createTicket ,updateTicket ,deleteTicket ,giveToTheTechnician,getUnassignedTickets,closeTicket}=require('../controllers/ticket.controller');
 const { verifyToken} = require("../middlewares/auth.middleware");
 const {handleSendByFormData}=require('../middlewares/form-data.middleware')
-
-const {isAdmin ,isAdminOrManager, isUserAndNotTicketOwner ,isUser,isManager}=require('../middlewares/roles.middlewre');
+const {isAdminOrManager, isUserAndNotTicketOwner ,isUser,isManager,managerResponsibleOnTicket}=require('../middlewares/roles.middlewre');
+const { ticketValidation } = require("../middlewares/ticket.middleware");
 
 
 // GET all tickets //only admin or manager can access to this route
@@ -28,8 +28,10 @@ router.patch("/:id",[handleSendByFormData,  verifyToken,isManager], updateTicket
 // DELETE a ticket by ID // any one can delete the ticket 
 router.delete("/:id",[ verifyToken ,isManager],  deleteTicket);
 
-
 // Give ticket To The Technician
 router.post("/giveToTheTechnician", [handleSendByFormData,verifyToken,isManager], [giveToTheTechnician]);
+
+// change ticket status to close and delete ticket conversation and his messages 
+router.get('/close/:id',[ verifyToken ,ticketValidation,managerResponsibleOnTicket], closeTicket)
 
 module.exports = router;

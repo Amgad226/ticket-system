@@ -106,6 +106,21 @@ const isAdminOrManagerOrTechnicianIsMe= async (req,res,next)=>{
     return res.status(403).json({ message: "Access denied" });
 
 }
+// 
+const managerResponsibleOnTicket = async (req,res,next)=>{
+  if (req.user.role == "admin"){return next();}
+
+  if (req.user.role == "manager")
+  {
+    const ticketId  =req.params.id ; 
+    const ticket = await Ticket.findById(ticketId)
+    if (ticket.manager==req.user.id){
+      return next()
+    }
+  }
+  return res.status(403).json({ message: "Access denied, only ticket responsible manager or admin " });
+
+}
 
 
 module.exports={
@@ -121,4 +136,5 @@ module.exports={
     isAdminOrManagerOrTechnicianIsMe,
     ManagerOwnerTheChat,
     isUserAndNotTicketOwner,
+    managerResponsibleOnTicket
 }
