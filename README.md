@@ -1,4 +1,6 @@
 # npm install 
-# npm run dev for run with nodemon
-# npm run start to run with node 
+# for run with nodemon
+## npm run dev 
+# for run with node 
+## npm run start 
 # read documentation.html
